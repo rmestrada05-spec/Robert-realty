@@ -1,5 +1,3 @@
-
-
 import { useState, useRef } from "react";
 
 const RED = "#c0392b";
@@ -450,8 +448,8 @@ export default function App() {
   const savings = getSavingsTarget(data.income > 0 ? data.income : 50000);
 
   return (
-    <div style={{ background: OFF_WHITE, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
-      <div style={{ background: "#fff", width: "100%", maxWidth: 560, border: `1px solid ${BORDER}`, padding: "44px 40px 36px" }}>
+    <div style={{ background: "#fff", minHeight: "100vh", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "24px 16px", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+      <div style={{ background: "#fff", width: "100%", maxWidth: 520, padding: "36px 24px 28px" }}>
 
         <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: GRAY, marginBottom: 28 }}>
           Robert Michael <span style={{ color: RED }}>Realty</span> — Relocation Advisor
