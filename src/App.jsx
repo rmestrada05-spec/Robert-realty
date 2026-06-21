@@ -254,11 +254,20 @@ function HomeStyleInput({ onSelect }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
       {trolled && (
-        <div style={{ fontSize: 13.5, color: GRAY, padding: "4px 0 8px", fontFamily: "Georgia, serif", lineHeight: 1.7 }}>
-          Respect the vision — Tennessee's more geared toward new builds anyway. Did you know they just built an In-N-Out in Lebanon? I need something I can actually search. Pick one:
-        </div>
+        <>
+          <div style={{ display: "flex", marginBottom: 4 }}>
+            <div style={{ maxWidth: "85%", padding: "13px 17px", fontSize: 14.5, lineHeight: 1.65, background: OFF_WHITE, border: `1px solid ${BORDER}`, borderRadius: "0 12px 12px 12px", fontFamily: "Georgia, serif" }}>
+              Respect the vision — Tennessee these days is geared more toward modern infrastructure. The East Bank development right outside the Titans' brand new stadium is a perfect example of where things are headed.
+            </div>
+          </div>
+          <div style={{ display: "flex", marginBottom: 8 }}>
+            <div style={{ maxWidth: "85%", padding: "13px 17px", fontSize: 14.5, lineHeight: 1.65, background: OFF_WHITE, border: `1px solid ${BORDER}`, borderRadius: "0 12px 12px 12px", fontFamily: "Georgia, serif" }}>
+              Fun fact — they just built an In-N-Out in Lebanon. Back to business though, I need something I can actually work with. Pick one below:
+            </div>
+          </div>
+        </>
       )}
-      {styles.map(opt => (
+      {styles.filter(opt => !trolled || opt.value !== "other").map(opt => (
         <button key={opt.value} onClick={() => { if (opt.value === "other") { setCustom(true); return; } onSelect(opt.value, opt.label); }}
           style={{ background: "#fff", color: BLACK, border: `1px solid ${BORDER}`, padding: "12px 18px", fontSize: 13.5, cursor: "pointer", textAlign: "left", borderRadius: 4, fontFamily: "inherit" }}>
           {opt.label}
