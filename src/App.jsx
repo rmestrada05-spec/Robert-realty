@@ -230,36 +230,34 @@ function HomeStyleInput({ onSelect }) {
   ];
   if (custom) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-        {trolled && (
-          <div style={{ fontSize: 13, color: GRAY, padding: "8px 0", fontStyle: "italic" }}>
-            I love that style of home — but Lebanon is more geared toward new builds and modern infrastructure. Did you know they just built an In-N-Out in Lebanon!? Pick something I can work with and let's find you something great.
-          </div>
-        )}
-        <div style={{ display: "flex", gap: 10 }}>
-          <input value={customVal} onChange={e => setCustomVal(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === "Enter" && customVal.trim()) {
-                if (isTrollInput(customVal)) { setTrolled(true); setCustomVal(""); return; }
-                onSelect(customVal.trim(), customVal.trim());
-              }
-            }}
-            placeholder="Describe your dream home..." autoFocus
-            style={{ flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px", fontSize: 14, outline: "none", borderRadius: 4, fontFamily: "inherit", color: BLACK }} />
-          <button onClick={() => {
-            if (!customVal.trim()) return;
-            if (isTrollInput(customVal)) { setTrolled(true); setCustomVal(""); return; }
-            onSelect(customVal.trim(), customVal.trim());
+      <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+        <input value={customVal} onChange={e => setCustomVal(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === "Enter" && customVal.trim()) {
+              if (isTrollInput(customVal)) { setTrolled(true); setCustom(false); setCustomVal(""); return; }
+              onSelect(customVal.trim(), customVal.trim());
+            }
           }}
-            style={{ background: BLACK, color: "#fff", border: "none", padding: "12px 22px", fontSize: 13, fontWeight: 500, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>
-            Continue
-          </button>
-        </div>
+          placeholder="Describe your dream home..." autoFocus
+          style={{ flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px", fontSize: 14, outline: "none", borderRadius: 4, fontFamily: "inherit", color: BLACK, background: "#fff" }} />
+        <button onClick={() => {
+          if (!customVal.trim()) return;
+          if (isTrollInput(customVal)) { setTrolled(true); setCustom(false); setCustomVal(""); return; }
+          onSelect(customVal.trim(), customVal.trim());
+        }}
+          style={{ background: BLACK, color: "#fff", border: "none", padding: "12px 22px", fontSize: 13, fontWeight: 500, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>
+          Continue
+        </button>
       </div>
     );
   }
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+      {trolled && (
+        <div style={{ fontSize: 13.5, color: GRAY, padding: "4px 0 8px", fontFamily: "Georgia, serif", lineHeight: 1.7 }}>
+          Respect the vision — Tennessee's more geared toward new builds anyway. Did you know they just built an In-N-Out in Lebanon? I need something I can actually search. Pick one:
+        </div>
+      )}
       {styles.map(opt => (
         <button key={opt.value} onClick={() => { if (opt.value === "other") { setCustom(true); return; } onSelect(opt.value, opt.label); }}
           style={{ background: "#fff", color: BLACK, border: `1px solid ${BORDER}`, padding: "12px 18px", fontSize: 13.5, cursor: "pointer", textAlign: "left", borderRadius: 4, fontFamily: "inherit" }}>
