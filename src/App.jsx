@@ -455,7 +455,7 @@ export default function App() {
   const savings = getSavingsTarget(data.income > 0 ? data.income : 50000);
 
   return (
-    <div style={{ background: "#fff", minHeight: "100vh", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "24px 16px", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div style={{ background: "#fff", minHeight: "100vh", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "0", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <div style={{ background: "#fff", width: "100%", maxWidth: 520, padding: "36px 24px 28px" }}>
 
         <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: GRAY, marginBottom: 28 }}>
