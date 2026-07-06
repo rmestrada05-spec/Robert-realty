@@ -1,0 +1,516 @@
+import { useState, useRef } from "react";
+
+const GOLD = "#C9A84C";
+const BLACK = "#0a0a0a";
+const DARK = "#141414";
+const GRAY = "#888";
+const BORDER = "#2a2a2a";
+const WHITE = "#f5f5f5";
+
+const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwBiCWO6c53DekDCzwdHHfNPC8ARQG-lBcKRs5ZqjQvLdnaNg-cINwXYvc-wwTOWbDW/exec";
+
+function logLeadToSheet(data) {
+  try {
+    fetch(SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({
+        name: data.name,
+        area: data.area,
+        junkTypes: Array.isArray(data.junkTypes) ? data.junkTypes.join(", ") : data.junkTypes,
+        loadSize: data.loadSize,
+        timeline: data.timeline,
+        contactType: data.contactType,
+        contact: data.contact,
+      }),
+    });
+  } catch (err) {
+    console.error("Lead logging failed:", err);
+  }
+}
+
+function isQuestion(val) {
+  const v = val.trim().toLowerCase();
+  if (v.endsWith("?")) return true;
+  const starters = ["why ", "how ", "what ", "when ", "who ", "is ", "are ", "do ", "did ", "can ", "will ", "does ", "tell me", "explain"];
+  return starters.some(s => v.startsWith(s));
+}
+
+function cleanLocation(raw) {
+  if (!raw) return "";
+  let loc = raw.trim();
+  const fillers = [
+    /^i'?m\s+from\s+/i, /^from\s+/i, /^in\s+/i, /^out\s+of\s+/i,
+    /^based\s+in\s+/i, /^living\s+in\s+/i, /^located\s+in\s+/i,
+  ];
+  for (const f of fillers) loc = loc.replace(f, "");
+  loc = loc.trim().replace(/[.!?]+$/, "");
+  loc = loc.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+  return loc;
+}
+
+function parseNameArea(val) {
+  const fromMatch = val.match(/^(.+?)\s+(?:and\s+)?(?:i'?m\s+)?(?:from|in|out of)\s+(.+)$/i);
+  const commaMatch = val.match(/^([^,]+),\s*(.+)$/);
+  if (fromMatch) {
+    const name = fromMatch[1].trim().split(/\s+/)[0];
+    return { name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(), area: cleanLocation(fromMatch[2]) };
+  }
+  if (commaMatch) return { name: commaMatch[1].trim(), area: cleanLocation(commaMatch[2]) };
+  const words = val.trim().split(/\s+/);
+  if (words.length === 1) return { name: words[0], area: "" };
+  return { name: words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase(), area: cleanLocation(words.slice(1).join(" ")) };
+}
+
+const JUNK_TYPES = [
+  { label: "Furniture & appliances", value: "furniture" },
+  { label: "Yard waste & green debris", value: "yard" },
+  { label: "Construction scraps", value: "construction" },
+  { label: "Concrete & masonry", value: "concrete" },
+  { label: "Dirt & rock", value: "dirt" },
+  { label: "General junk / mixed load", value: "general" },
+  { label: "Full property cleanout", value: "cleanout" },
+];
+
+const LOAD_SIZES = [
+  { label: "Just a few items", value: "small" },
+  { label: "About half a load", value: "half" },
+  { label: "Full trailer load", value: "full" },
+  { label: "Multiple loads", value: "multiple" },
+  { label: "Not sure", value: "unsure" },
+];
+
+function BotBubble({ text }) {
+  return (
+    <div style={{ display: "flex", marginBottom: 6 }}>
+      <div style={{
+        maxWidth: "88%", padding: "12px 16px", fontSize: 14.5, lineHeight: 1.65,
+        background: DARK, border: `1px solid ${BORDER}`,
+        borderRadius: "0 10px 10px 10px", color: WHITE,
+        fontFamily: "Georgia, serif"
+      }}>
+        {text}
+      </div>
+    </div>
+  );
+}
+
+function UserBubble({ text }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 6 }}>
+      <div style={{
+        maxWidth: "88%", padding: "12px 16px", fontSize: 14, lineHeight: 1.65,
+        background: GOLD, color: BLACK, borderRadius: "10px 0 10px 10px",
+        fontFamily: "inherit", fontWeight: 500
+      }}>
+        {text}
+      </div>
+    </div>
+  );
+}
+
+function ContactBubble() {
+  return (
+    <div style={{ display: "flex", marginBottom: 6 }}>
+      <div style={{
+        padding: "14px 18px", background: DARK,
+        border: `1px solid ${GOLD}`, borderRadius: "0 10px 10px 10px",
+        fontSize: 13.5, lineHeight: 1.8
+      }}>
+        <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: GOLD, marginBottom: 8 }}>
+          Reach us directly
+        </div>
+        <div style={{ fontWeight: 500, color: WHITE }}>📞 (661) 802-1248</div>
+        <div style={{ fontSize: 12, color: GRAY, marginTop: 4 }}>Golden Strada Trailers · Lancaster, CA</div>
+      </div>
+    </div>
+  );
+}
+
+function TypingIndicator() {
+  return (
+    <div style={{ display: "flex", marginBottom: 6 }}>
+      <div style={{
+        padding: "13px 17px", background: DARK, border: `1px solid ${BORDER}`,
+        borderRadius: "0 10px 10px 10px", display: "flex", gap: 5, alignItems: "center"
+      }}>
+        {[0, 0.2, 0.4].map((d, i) => (
+          <div key={i} style={{
+            width: 6, height: 6, borderRadius: "50%", background: GOLD,
+            animation: `bounce 1.2s ${d}s infinite`
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TextInput({ val, setVal, placeholder, onSubmit, onKey, type = "text", label = "Continue" }) {
+  return (
+    <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+      <input
+        value={val} onChange={e => setVal(e.target.value)} onKeyDown={onKey}
+        placeholder={placeholder} type={type}
+        style={{
+          flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px",
+          fontSize: 14, outline: "none", borderRadius: 4,
+          fontFamily: "inherit", color: WHITE, background: DARK,
+        }}
+      />
+      <button onClick={onSubmit} style={{
+        background: GOLD, color: BLACK, border: "none",
+        padding: "12px 22px", fontSize: 13, fontWeight: 700,
+        cursor: "pointer", borderRadius: 4, letterSpacing: "0.05em",
+        fontFamily: "inherit"
+      }}>
+        {label}
+      </button>
+    </div>
+  );
+}
+
+function JunkSelector({ onConfirm }) {
+  const [selected, setSelected] = useState([]);
+  const [size, setSize] = useState(null);
+
+  function toggle(val) {
+    setSelected(s => s.includes(val) ? s.filter(x => x !== val) : [...s, val]);
+  }
+
+  const ready = selected.length > 0 && size !== null;
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: GOLD, marginBottom: 10 }}>
+        What are we hauling?
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
+        {JUNK_TYPES.map(opt => (
+          <button key={opt.value} onClick={() => toggle(opt.value)} style={{
+            background: selected.includes(opt.value) ? GOLD : "transparent",
+            color: selected.includes(opt.value) ? BLACK : WHITE,
+            border: `1px solid ${selected.includes(opt.value) ? GOLD : BORDER}`,
+            padding: "11px 16px", fontSize: 13.5, cursor: "pointer",
+            textAlign: "left", borderRadius: 4, fontFamily: "inherit",
+            fontWeight: selected.includes(opt.value) ? 600 : 400,
+            transition: "all 0.15s"
+          }}>
+            {selected.includes(opt.value) ? "✓ " : ""}{opt.label}
+          </button>
+        ))}
+      </div>
+
+      {selected.length > 0 && (
+        <>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: GOLD, marginBottom: 10 }}>
+            Roughly how much?
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
+            {LOAD_SIZES.map(opt => (
+              <button key={opt.value} onClick={() => setSize(opt.value)} style={{
+                background: size === opt.value ? GOLD : "transparent",
+                color: size === opt.value ? BLACK : WHITE,
+                border: `1px solid ${size === opt.value ? GOLD : BORDER}`,
+                padding: "11px 16px", fontSize: 13.5, cursor: "pointer",
+                textAlign: "left", borderRadius: 4, fontFamily: "inherit",
+                fontWeight: size === opt.value ? 600 : 400,
+                transition: "all 0.15s"
+              }}>
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {ready && (
+        <button onClick={() => onConfirm(selected, size)} style={{
+          background: GOLD, color: BLACK, border: "none",
+          padding: "13px 24px", fontSize: 13.5, fontWeight: 700,
+          cursor: "pointer", borderRadius: 4, fontFamily: "inherit",
+          width: "100%", letterSpacing: "0.04em"
+        }}>
+          That's everything →
+        </button>
+      )}
+    </div>
+  );
+}
+
+function TimelineContactSelector({ onConfirm }) {
+  const [timeline, setTimeline] = useState(null);
+  const [contactType, setContactType] = useState(null);
+  const [contactVal, setContactVal] = useState("");
+
+  const timelines = [
+    { label: "As soon as possible", value: "asap" },
+    { label: "This week", value: "week" },
+    { label: "Within the month", value: "month" },
+    { label: "Just planning ahead", value: "planning" },
+  ];
+
+  const ready = timeline && contactType && contactVal.trim();
+
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: GOLD, marginBottom: 10 }}>
+        How soon do you need it gone?
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
+        {timelines.map(opt => (
+          <button key={opt.value} onClick={() => setTimeline(opt.value)} style={{
+            background: timeline === opt.value ? GOLD : "transparent",
+            color: timeline === opt.value ? BLACK : WHITE,
+            border: `1px solid ${timeline === opt.value ? GOLD : BORDER}`,
+            padding: "11px 16px", fontSize: 13.5, cursor: "pointer",
+            textAlign: "left", borderRadius: 4, fontFamily: "inherit",
+            fontWeight: timeline === opt.value ? 600 : 400,
+            transition: "all 0.15s"
+          }}>
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {timeline && (
+        <>
+          <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: GOLD, marginBottom: 10 }}>
+            Best way to reach you?
+          </div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            {[{ label: "Phone", value: "phone" }, { label: "Email", value: "email" }].map(opt => (
+              <button key={opt.value} onClick={() => setContactType(opt.value)} style={{
+                flex: 1, background: contactType === opt.value ? GOLD : "transparent",
+                color: contactType === opt.value ? BLACK : WHITE,
+                border: `1px solid ${contactType === opt.value ? GOLD : BORDER}`,
+                padding: "11px 16px", fontSize: 13.5, cursor: "pointer",
+                textAlign: "center", borderRadius: 4, fontFamily: "inherit",
+                fontWeight: contactType === opt.value ? 600 : 400,
+                transition: "all 0.15s"
+              }}>
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
+          {contactType && (
+            <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+              <input
+                value={contactVal} onChange={e => setContactVal(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter" && ready) onConfirm(timeline, contactType, contactVal.trim()); }}
+                placeholder={contactType === "phone" ? "Your phone number" : "Your email address"}
+                type={contactType === "phone" ? "tel" : "email"}
+                autoFocus
+                style={{
+                  flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px",
+                  fontSize: 14, outline: "none", borderRadius: 4,
+                  fontFamily: "inherit", color: WHITE, background: DARK
+                }}
+              />
+            </div>
+          )}
+        </>
+      )}
+
+      {ready && (
+        <button onClick={() => onConfirm(timeline, contactType, contactVal.trim())} style={{
+          background: GOLD, color: BLACK, border: "none",
+          padding: "13px 24px", fontSize: 13.5, fontWeight: 700,
+          cursor: "pointer", borderRadius: 4, fontFamily: "inherit",
+          width: "100%", letterSpacing: "0.04em"
+        }}>
+          Send my request →
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default function App() {
+  const [step, setStep] = useState("intro");
+  const [data, setData] = useState({
+    name: "", area: "", junkTypes: [], loadSize: "",
+    timeline: "", contactType: "", contact: ""
+  });
+  const [messages, setMessages] = useState([
+    { type: "bot", text: "Hey — I'm Robert with Golden Strada Trailers. We haul just about anything: furniture, construction debris, concrete, dirt, yard waste, full cleanouts." },
+    { type: "bot", text: "What's your name and what area are you in?" },
+  ]);
+  const [inputVal, setInputVal] = useState("");
+  const [typing, setTyping] = useState(false);
+  const bottomRef = useRef(null);
+
+  function scrollDown() { setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 50); }
+  function addMsg(type, text) { setMessages(m => [...m, { type, text }]); scrollDown(); }
+  async function botSay(text, delay = 700) {
+    setTyping(true); scrollDown();
+    await new Promise(r => setTimeout(r, delay));
+    setTyping(false); addMsg("bot", text);
+  }
+  function enter(e, fn) { if (e.key === "Enter") fn(); }
+
+  async function handleOffScript(question) {
+    addMsg("user", question);
+    setInputVal("");
+    setTyping(true); scrollDown();
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 200,
+          system: "You are Robert, owner of Golden Strada Trailers in Lancaster, CA. Full-service junk removal and waste hauling in the Antelope Valley. 12x8x4 hydraulic dump trailer, 14 cubic yards, 8,200 lbs payload. You haul furniture, appliances, yard waste, construction debris, concrete, dirt, rock — everything except hazardous materials. Service area: Lancaster, Palmdale, Littlerock, Antelope Acres, California City, Newhall, Santa Clarita corridor. Straight-talking, hardworking, no-nonsense. Answer briefly in 2 sentences max then ask them for their name and area.",
+          messages: [{ role: "user", content: question }]
+        })
+      });
+      const json = await res.json();
+      const reply = json.content?.find(b => b.type === "text")?.text || "Good question — call us at (661) 802-1248 and we'll sort it out.";
+      setTyping(false);
+      addMsg("bot", reply);
+    } catch {
+      setTyping(false);
+      addMsg("bot", "Good question — give us a call at (661) 802-1248 and we'll get you sorted.");
+    }
+    await new Promise(r => setTimeout(r, 300));
+    addMsg("contact", "");
+  }
+
+  async function handleIntro() {
+    if (!inputVal.trim()) return;
+    const val = inputVal.trim();
+    if (isQuestion(val)) { handleOffScript(val); return; }
+    const { name, area } = parseNameArea(val);
+    setData(d => ({ ...d, name, area }));
+    setInputVal(""); addMsg("user", val);
+    setStep("loading");
+    if (area && area.length > 2) {
+      await botSay(`Good to meet you, ${name}. What are we hauling and how much is there?`);
+      setStep("junk");
+    } else {
+      await botSay(`Good to meet you, ${name} — what city or area are you in? We serve Lancaster and surrounding communities.`);
+      setStep("area");
+    }
+  }
+
+  async function handleArea() {
+    if (!inputVal.trim()) return;
+    const area = inputVal.trim();
+    setData(d => ({ ...d, area }));
+    setInputVal(""); addMsg("user", area);
+    setStep("loading");
+    await botSay(`Got it. What are we hauling and how much is there?`);
+    setStep("junk");
+  }
+
+  async function handleJunk(junkTypes, loadSize) {
+    const junkLabels = JUNK_TYPES.filter(j => junkTypes.includes(j.value)).map(j => j.label);
+    const sizeLabel = LOAD_SIZES.find(s => s.value === loadSize)?.label || loadSize;
+    setData(d => ({ ...d, junkTypes, loadSize }));
+    addMsg("user", `${junkLabels.join(", ")} — ${sizeLabel}`);
+    setStep("loading");
+    await botSay(`Got it. Last thing — how soon do you need it gone, and what's the best way to reach you?`);
+    setStep("timeline");
+  }
+
+  async function handleTimeline(timeline, contactType, contact) {
+    const timelineLabel = {
+      asap: "As soon as possible",
+      week: "This week",
+      month: "Within the month",
+      planning: "Just planning ahead"
+    }[timeline] || timeline;
+
+    const finalData = { ...data, timeline, contactType, contact };
+    setData(finalData);
+    addMsg("user", `${timelineLabel} · ${contact}`);
+    setStep("loading");
+    logLeadToSheet(finalData);
+    await botSay(`Perfect — Robert will reach out to confirm availability and give you a free estimate. We appreciate the call, ${data.name}.`, 800);
+    setStep("done");
+  }
+
+  return (
+    <div style={{
+      background: "#080808", minHeight: "100vh",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: 24, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    }}>
+      <div style={{
+        background: BLACK, width: "100%", maxWidth: 540,
+        border: `1px solid ${BORDER}`, padding: "40px 36px 32px"
+      }}>
+
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: GRAY, marginBottom: 6 }}>
+            Free Estimate
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: GOLD, letterSpacing: "0.06em", textTransform: "uppercase", fontFamily: "Georgia, serif" }}>
+            Golden Strada Trailers
+          </div>
+          <div style={{ fontSize: 11, color: GRAY, marginTop: 3, letterSpacing: "0.04em" }}>
+            Antelope Valley Junk Removal · Lancaster, CA
+          </div>
+        </div>
+
+        <div style={{ height: 1, background: `linear-gradient(to right, ${GOLD}, transparent)`, marginBottom: 28 }} />
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+          {messages.map((m, i) => {
+            if (m.type === "bot") return <BotBubble key={i} text={m.text} />;
+            if (m.type === "contact") return <ContactBubble key={i} />;
+            return <UserBubble key={i} text={m.text} />;
+          })}
+          {typing && <TypingIndicator />}
+
+          {step === "done" && (
+            <div style={{
+              background: DARK, border: `1px solid ${GOLD}`,
+              borderRadius: 4, padding: "18px 20px", marginTop: 8
+            }}>
+              <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: GOLD, marginBottom: 8 }}>
+                Request received
+              </div>
+              <div style={{ fontSize: 13.5, color: WHITE, lineHeight: 1.7 }}>
+                We'll be in touch shortly with a free estimate. Questions in the meantime?
+              </div>
+              <div style={{ marginTop: 12, fontSize: 13.5, color: GOLD, fontWeight: 600 }}>
+                📞 (661) 802-1248
+              </div>
+            </div>
+          )}
+
+          <div ref={bottomRef} />
+        </div>
+
+        {step === "intro" && (
+          <TextInput
+            val={inputVal} setVal={setInputVal}
+            placeholder='e.g. "Mike, Lancaster"'
+            onSubmit={handleIntro} onKey={e => enter(e, handleIntro)}
+          />
+        )}
+        {step === "area" && (
+          <TextInput
+            val={inputVal} setVal={setInputVal}
+            placeholder="City or neighborhood"
+            onSubmit={handleArea} onKey={e => enter(e, handleArea)}
+          />
+        )}
+        {step === "junk" && <JunkSelector onConfirm={handleJunk} />}
+        {step === "timeline" && <TimelineContactSelector onConfirm={handleTimeline} />}
+
+        <div style={{ height: 1, background: BORDER, margin: "20px 0 14px" }} />
+        <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: BORDER, textAlign: "center" }}>
+          Golden Strada Trailers · (661) 802-1248
+        </div>
+      </div>
+      <style>{`
+        @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+        input::placeholder { color: #555; }
+        input { color: #f5f5f5 !important; }
+      `}</style>
+    </div>
+  );
+}

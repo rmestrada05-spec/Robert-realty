@@ -191,7 +191,7 @@ function TNLocationInput({ onSelect }) {
         <input value={customVal} onChange={e => setCustomVal(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter" && customVal.trim()) onSelect(customVal.trim(), customVal.trim()); }}
           placeholder="Type your location" autoFocus
-          style={{ flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px", fontSize: 14, outline: "none", borderRadius: 4, fontFamily: "inherit", color: BLACK }} />
+          style={{ flex: 1, border: `1px solid ${BORDER}`, padding: "12px 16px", fontSize: 14, outline: "none", borderRadius: 4, fontFamily: "inherit", color: BLACK, background: "#fff" }} />
         <button onClick={() => { if (customVal.trim()) onSelect(customVal.trim(), customVal.trim()); }}
           style={{ background: BLACK, color: "#fff", border: "none", padding: "12px 22px", fontSize: 13, fontWeight: 500, cursor: "pointer", borderRadius: 4, fontFamily: "inherit" }}>
           Continue
@@ -289,7 +289,6 @@ export default function App() {
   const [progress, setProgress] = useState(5);
   const [showResult, setShowResult] = useState(false);
   const [showContactCTA, setShowContactCTA] = useState(false);
-  const [showListing] = useState(false);
   const [showMeetOption, setShowMeetOption] = useState(false);
   const [showBookingLink, setShowBookingLink] = useState(false);
   const bottomRef = useRef(null);
@@ -457,23 +456,19 @@ export default function App() {
   return (
     <div style={{ background: "#fff", minHeight: "100vh", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "0", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <div style={{ background: "#fff", width: "100%", maxWidth: 520, padding: "36px 24px 28px" }}>
-
         <div style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: GRAY, marginBottom: 28 }}>
           Robert Michael <span style={{ color: RED }}>Realty</span> — Relocation Advisor
         </div>
         <div style={{ height: 2, background: LIGHT_GRAY, marginBottom: 32, borderRadius: 2, overflow: "hidden" }}>
           <div style={{ height: "100%", width: progress + "%", background: RED, borderRadius: 2, transition: "width 0.4s ease" }} />
         </div>
-
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
           {messages.map((m, i) => {
             if (m.type === "bot") return <BotBubble key={i} text={m.text} />;
             if (m.type === "contact") return <ContactBubble key={i} />;
             return <UserBubble key={i} text={m.text} />;
           })}
-
           {typing && <TypingIndicator />}
-
           {showResult && (
             data.incomePrivate ? (
               <div style={{ background: OFF_WHITE, border: `1px solid ${BORDER}`, padding: "18px 20px", borderRadius: 4, fontFamily: "Georgia, serif", fontSize: 15, lineHeight: 1.7, color: BLACK }}>
@@ -482,29 +477,27 @@ export default function App() {
             ) : (
               <div style={{ marginTop: 4 }}>
                 <div style={{ background: OFF_WHITE, border: `1px solid ${BORDER}`, padding: "18px 20px", borderRadius: 4 }}>
-                    <div style={{ fontFamily: "Georgia, serif", fontSize: 15, fontWeight: 600, marginBottom: 14 }}>Rough Estimate Buying Power</div>
-                    {[
-                      { label: "Where you are now", value: formatCurrency(originPower), color: RED },
-                      { label: "In Tennessee", value: formatCurrency(tnPower), color: GREEN },
-                      { label: "Difference", value: "+" + formatCurrency(tnPower - originPower), color: GREEN },
-                      { label: "TN State Income Tax", value: "None", color: GREEN },
-                      { label: "Est. sqft where you are", value: Math.round(originPower / 280).toLocaleString() + " sqft", color: RED },
-                      { label: "Est. sqft in Tennessee", value: Math.round(tnPower / 165).toLocaleString() + " sqft", color: GREEN },
-
-                    ].map((r, i, arr) => (
-                      <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: i < arr.length - 1 ? `1px solid ${BORDER}` : "none", fontSize: 13.5 }}>
-                        <span style={{ color: GRAY }}>{r.label}</span>
-                        <span style={{ fontWeight: 500, color: r.color }}>{r.value}</span>
-                      </div>
-                    ))}
-                    <div style={{ marginTop: 12, fontSize: 11.5, color: GRAY, fontStyle: "italic", lineHeight: 1.6 }}>
-                      My lender is very good at what they do — your buying power isn't concrete.
+                  <div style={{ fontFamily: "Georgia, serif", fontSize: 15, fontWeight: 600, marginBottom: 14 }}>Rough Estimate Buying Power</div>
+                  {[
+                    { label: "Where you are now", value: formatCurrency(originPower), color: RED },
+                    { label: "In Tennessee", value: formatCurrency(tnPower), color: GREEN },
+                    { label: "Difference", value: "+" + formatCurrency(tnPower - originPower), color: GREEN },
+                    { label: "TN State Income Tax", value: "None", color: GREEN },
+                    { label: "Est. sqft where you are", value: Math.round(originPower / 280).toLocaleString() + " sqft", color: RED },
+                    { label: "Est. sqft in Tennessee", value: Math.round(tnPower / 165).toLocaleString() + " sqft", color: GREEN },
+                  ].map((r, i, arr) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: i < arr.length - 1 ? `1px solid ${BORDER}` : "none", fontSize: 13.5 }}>
+                      <span style={{ color: GRAY }}>{r.label}</span>
+                      <span style={{ fontWeight: 500, color: r.color }}>{r.value}</span>
                     </div>
+                  ))}
+                  <div style={{ marginTop: 12, fontSize: 11.5, color: GRAY, fontStyle: "italic", lineHeight: 1.6 }}>
+                    My lender is very good at what they do — your buying power isn't concrete.
                   </div>
+                </div>
               </div>
             )
           )}
-
           {showContactCTA && step !== "contactCapture" && step !== "done" && step !== "loading" && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
               {[
@@ -521,14 +514,12 @@ export default function App() {
               ))}
             </div>
           )}
-
           {showMeetOption && (
             <button onClick={handleSwitchToMeet}
               style={{ alignSelf: "flex-start", background: "none", border: `1px solid ${BORDER}`, padding: "10px 16px", fontSize: 13, color: GRAY, cursor: "pointer", borderRadius: 4, fontFamily: "inherit", marginTop: 4 }}>
               Actually — let's do a Google Meet instead
             </button>
           )}
-
           {showBookingLink && (
             <a href="https://calendar.app.google/SnD35axfF1dfsfNz7" target="_blank" rel="noreferrer"
               style={{ display: "block", background: BLACK, color: "#fff", padding: "16px 20px", borderRadius: 4, textDecoration: "none", marginTop: 4 }}>
@@ -537,12 +528,8 @@ export default function App() {
               <div style={{ fontSize: 12, color: "#aaa" }}>Book a time →</div>
             </a>
           )}
-
-
-
           <div ref={bottomRef} />
         </div>
-
         {step === "intro" && <TextInput val={inputVal} setVal={setInputVal} placeholder='e.g. "John from Los Angeles"' onSubmit={handleIntro} onKey={e => enter(e, handleIntro)} />}
         {step === "location" && <TextInput val={inputVal} setVal={setInputVal} placeholder="City, State or Country" onSubmit={handleLocation} onKey={e => enter(e, handleLocation)} />}
         {step === "homeStatus" && <OptionButtons options={[{ label: "I own my home", value: "own" }, { label: "I rent", value: "rent" }, { label: "Living with family / other", value: "other" }]} onSelect={handleHomeStatus} />}
@@ -562,7 +549,6 @@ export default function App() {
             You are all set. Speak soon.
           </div>
         )}
-
         <div style={{ height: 1, background: LIGHT_GRAY, margin: "20px 0 12px" }} />
         <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "#999", textAlign: "center" }}>
           Robert Michael <span style={{ color: RED }}>Realty</span>
