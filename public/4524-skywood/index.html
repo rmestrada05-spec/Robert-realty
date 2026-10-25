@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>4524 Skywood Lane | Robert Michael Realty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;600&family=Cormorant+Garamond:wght@500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+[hidden]{{display:none!important}} img{{max-width:100%}} body{{margin:0}}
+/* Layout: an editorial listing issue. Masthead, cover photo, a live concierge console,
+   a room-by-room walk in house order, the market case, contact. One wide column, 1120 max. */
+:root{
+  --paper:#FAF9F5; --panel:#F1EEE6; --ink:#1B1F2C; --body:#3A3D47; --muted:#6B675F;
+  --rule:#DAD6CC; --accent:#B5282E; --pumpkin:#B0541B; --onink:#FAF9F5;
+  --display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --sans:"Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#121419; --panel:#1B1E25; --ink:#F1EEE6; --body:#CBC8C0; --muted:#9C988F;
+  --rule:#2E313A; --accent:#E2575C; --pumpkin:#E5813F; --onink:#121419; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121419; --panel:#1B1E25; --ink:#F1EEE6; --body:#CBC8C0; --muted:#9C988F;
+  --rule:#2E313A; --accent:#E2575C; --pumpkin:#E5813F; --onink:#121419; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--body); font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:1120px; margin:0 auto}
+h1,h2,h3{font-family:var(--display); font-weight:400; color:var(--ink); text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+.cap{font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted)}
+.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.diamond{display:inline-block; width:7px; height:7px; background:var(--accent); transform:rotate(45deg)}
+
+/* masthead */
+.mast{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:22px 14px; border-bottom:1px solid var(--ink)}
+.logo{width:148px; aspect-ratio:900/195; background:var(--ink); -webkit-mask:url(img/logo.png) center/contain no-repeat; mask:url(img/logo.png) center/contain no-repeat}
+.mast nav{display:flex; gap:22px; flex-wrap:wrap}
+.mast nav a{text-decoration:none}
+.issue{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding-block:8px 0; border-top:3px double var(--rule); margin-top:3px}
+
+/* cover */
+.cover{display:grid; grid-template-columns:1.35fr 1fr; gap:40px; padding-block:34px 26px; align-items:end}
+.cover figure{margin:0; position:relative}
+.cover img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover}
+.frame::after{content:""; position:absolute; inset:10px; border:1px solid rgba(250,249,245,.8); pointer-events:none}
+.kicker{color:var(--pumpkin)}
+.cover h1{font-size:clamp(40px,6vw,68px); line-height:1.02; margin-top:14px}
+.cover h1 em{font-style:italic}
+.cover .deck{font-family:var(--serif); font-size:21px; line-height:1.35; color:var(--body); margin-top:16px; max-width:30ch}
+.when{display:flex; gap:14px; align-items:center; margin-top:24px; padding:14px 16px; border:1px solid var(--pumpkin)}
+.when b{font-family:var(--display); font-weight:400; font-size:22px; color:var(--ink)}
+.stats{display:grid; grid-template-columns:repeat(5,1fr); border-block:1px solid var(--rule); margin-top:6px}
+.stats div{padding:16px 10px; text-align:center; border-left:1px solid var(--rule); min-width:0}
+.stats div:first-child{border-left:0}
+.stats b{display:block; font-family:var(--display); font-weight:400; font-size:clamp(20px,3vw,30px); color:var(--ink); line-height:1.1}
+
+/* concierge */
+.concierge{margin-block:44px; background:var(--ink); color:var(--onink); display:grid; grid-template-columns:280px 1fr}
+.concierge aside{padding:28px; border-right:1px solid rgba(127,127,127,.3); display:flex; flex-direction:column; gap:14px}
+.concierge aside h2{color:var(--onink); font-size:30px; line-height:1.1}
+.concierge aside p{font-size:14px; opacity:.8}
+.concierge .cap{color:var(--onink); opacity:.65}
+.live{display:inline-flex; align-items:center; gap:8px}
+.live i{width:7px; height:7px; border-radius:50%; background:var(--pumpkin); animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.console{display:flex; flex-direction:column; min-width:0}
+.log{height:360px; overflow-y:auto; padding:24px 28px; display:flex; flex-direction:column; gap:14px; font-size:15px}
+.msg{max-width:62ch}
+.msg.you{align-self:flex-end; font-family:var(--mono); font-size:13px; opacity:.75; text-align:right}
+.msg.bot{font-family:var(--sans); line-height:1.6}
+.msg.bot .who{font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--pumpkin); display:block; margin-bottom:2px}
+.msg .handoff{margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.chips{display:flex; gap:8px; flex-wrap:wrap; padding:0 28px 14px}
+.chip{font-family:var(--mono); font-size:12px; color:var(--onink); background:transparent; border:1px solid rgba(127,127,127,.5); padding:8px 12px; cursor:pointer; min-height:36px}
+.chip:hover{border-color:var(--pumpkin); color:var(--pumpkin)}
+.ask{display:flex; border-top:1px solid rgba(127,127,127,.3)}
+.ask label{position:absolute; left:-9999px}
+.ask input{flex:1; min-width:0; background:transparent; border:0; color:var(--onink); font-family:var(--mono); font-size:15px; padding:18px 28px}
+.ask input::placeholder{color:var(--onink); opacity:.45}
+.ask button{background:var(--pumpkin); color:#fff; border:0; font-family:var(--sans); font-weight:600; letter-spacing:.18em; font-size:11px; text-transform:uppercase; padding:0 26px; cursor:pointer}
+.btn{font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.18em; text-transform:uppercase; padding:10px 14px; border:1px solid currentColor; background:transparent; color:inherit; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; min-height:40px}
+.btn.solid{background:var(--pumpkin); border-color:var(--pumpkin); color:#fff}
+
+/* walk */
+.sec-head{display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; border-top:1px solid var(--ink); padding-top:18px}
+.sec-head h2{font-size:clamp(30px,4vw,44px)}
+.level{display:flex; align-items:center; gap:14px; margin:38px 0 18px}
+.level span:last-child{flex:1; height:1px; background:var(--rule)}
+.stops{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:34px 28px}
+.stop{display:flex; flex-direction:column; gap:12px; min-width:0}
+.stop.wide{grid-column:1/-1}
+.stop button.ph{padding:0; border:0; background:none; cursor:zoom-in; position:relative; display:block; width:100%}
+.stop img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover}
+.stop.wide img{aspect-ratio:16/8}
+.stop .meta{display:flex; justify-content:space-between; align-items:baseline; gap:12px}
+.stop h3{font-size:22px}
+.stop h3 small{font-family:var(--mono); font-size:12px; color:var(--pumpkin); margin-right:10px; letter-spacing:.06em}
+.stop p{font-size:15px; max-width:60ch}
+.dim{font-family:var(--mono); font-size:13px; color:var(--muted); white-space:nowrap}
+.pair{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+
+/* tour overlay */
+[hidden]{display:none!important}
+.tour{position:fixed; inset:0; z-index:50; background:#0d0f13; color:#F1EEE6; display:flex; flex-direction:column;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.tour-top{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px max(16px,env(safe-area-inset-left,0px))}
+.tour-top .cap{color:#F1EEE6; opacity:.7}
+.bar{height:2px; background:rgba(255,255,255,.15)} .bar i{display:block; height:100%; background:#E5813F; width:0; transition:width .3s}
+.tour-stage{flex:1; position:relative; min-height:0; display:flex; align-items:center; justify-content:center}
+.tour-stage img{max-width:100%; max-height:100%; object-fit:contain}
+.tour-cap{padding:16px max(16px,env(safe-area-inset-left,0px)) 22px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:end}
+.tour-cap h3{color:#F1EEE6; font-size:26px}
+.tour-cap p{opacity:.8; max-width:60ch; font-size:15px}
+.nav{position:absolute; top:50%; transform:translateY(-50%); background:rgba(13,15,19,.6); color:#fff; border:1px solid rgba(255,255,255,.3); width:48px; height:48px; cursor:pointer; font-size:20px}
+.nav.prev{left:12px} .nav.next{right:12px}
+.x{background:none; border:1px solid rgba(255,255,255,.4); color:#fff; min-height:40px; padding:0 14px; cursor:pointer; font-family:var(--sans); font-size:11px; letter-spacing:.18em; text-transform:uppercase}
+
+/* case */
+.case{display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:28px}
+.case .story p{font-family:var(--serif); font-size:19px; line-height:1.5; color:var(--body); margin-bottom:14px; max-width:58ch}
+.case .story p:first-child::first-letter{font-family:var(--display); float:left; font-size:62px; line-height:.86; padding:6px 10px 0 0; color:var(--pumpkin)}
+.pull{border-left:1px solid var(--rule); padding-left:28px}
+.pull .big{font-family:var(--display); font-size:clamp(64px,9vw,104px); color:var(--ink); line-height:.95}
+.pull em{font-family:var(--display); font-style:italic; font-size:20px; color:var(--ink); display:block; margin-top:14px; max-width:26ch}
+.scale{margin-top:40px; overflow-x:auto}
+.scale svg{display:block; width:100%; min-width:560px; height:auto}
+.comps{margin-top:30px; border-top:1px solid var(--ink)}
+.comp{display:grid; grid-template-columns:minmax(0,1fr) auto auto auto; gap:8px 22px; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--rule)}
+.comp .nm{font-family:var(--display); font-size:19px; color:var(--ink); display:flex; gap:10px; align-items:baseline; min-width:0}
+.comp .nm::after{content:""; flex:1; border-bottom:1px dotted var(--rule); transform:translateY(-4px)}
+.comp.me .nm,.comp.me .mono{color:var(--pumpkin)}
+.comp.me .nm{font-style:italic}
+.comp .mono{font-size:14px; color:var(--body); text-align:right}
+.comp .psf{font-family:var(--display); font-size:20px; color:var(--ink)}
+.comps-head{display:grid; grid-template-columns:minmax(0,1fr) auto auto auto; gap:22px; padding:10px 0}
+.facts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; border:1px solid var(--rule); margin-top:40px}
+.facts div{padding:18px; border-left:1px solid var(--rule); min-width:0}
+.facts div:first-child{border-left:0}
+.facts b{display:block; font-family:var(--display); font-weight:400; font-size:22px; color:var(--ink); margin-top:4px}
+
+/* contact */
+.contact{margin-block:64px 24px; display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center; border-top:1px solid var(--ink); padding-top:28px}
+.contact h2{font-size:clamp(32px,4.4vw,50px)}
+.contact h2 em{font-style:italic}
+.card{font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.5}
+.card .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.fine{font-size:12px; color:var(--muted); padding-block:22px 40px; border-top:1px solid var(--rule); display:flex; flex-direction:column; gap:6px}
+.toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--onink); padding:10px 16px; font-size:13px; z-index:60}
+
+
+/* issue flip-book */
+.issue-sec{margin-top:56px}
+.book-wrap{display:grid; grid-template-columns:auto minmax(0,1fr); gap:40px; align-items:center; margin-top:26px}
+.book{position:relative; width:min(460px, calc(100vw - 32px)); aspect-ratio:612/792; perspective:2200px}
+.leaf{position:absolute; inset:0; transform-origin:left center; transition:transform .8s cubic-bezier(.3,.7,.2,1); backface-visibility:hidden; box-shadow:0 18px 40px rgba(0,0,0,.18); background:#FAF9F5}
+.leaf img{display:block; width:100%; height:100%; object-fit:cover}
+.leaf.turned{transform:rotateY(-178deg)}
+.book::before{content:""; position:absolute; left:0; top:0; bottom:0; width:10px; z-index:200; background:linear-gradient(90deg, rgba(0,0,0,.18), transparent); pointer-events:none}
+.book-ctl{display:flex; gap:10px; align-items:center; margin-top:18px; flex-wrap:wrap}
+.toc{display:flex; flex-direction:column; gap:0; border-top:1px solid var(--ink)}
+.toc button{display:flex; justify-content:space-between; gap:16px; align-items:baseline; background:none; border:0; border-bottom:1px solid var(--rule); padding:14px 0; cursor:pointer; text-align:left; color:var(--ink); font-family:var(--display); font-size:20px}
+.toc button span{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.toc button.on{color:var(--pumpkin); font-style:italic}
+@media (max-width:820px){.book-wrap{grid-template-columns:1fr; justify-items:center}.toc{width:100%}}
+@media (prefers-reduced-motion:reduce){.leaf{transition:none}}
+@media (max-width:820px){
+  .cover,.case,.contact{grid-template-columns:1fr; gap:24px}
+  .concierge{grid-template-columns:1fr}
+  .concierge aside{border-right:0; border-bottom:1px solid rgba(127,127,127,.3)}
+  .stops{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,1fr)} .stats div:nth-child(4){border-left:0}
+  .stats div:nth-child(n+4){border-top:1px solid var(--rule)}
+  .facts{grid-template-columns:1fr 1fr} .facts div:nth-child(3){border-left:0} .facts div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .pull{border-left:0; padding-left:0; border-top:1px solid var(--rule); padding-top:20px}
+  .log{height:320px; padding:20px} .chips{padding:0 20px 12px} .ask input{padding:16px 20px}
+  .comp,.comps-head{grid-template-columns:minmax(0,1fr) auto auto; } .comp .sf,.comps-head .sf{display:none}
+}
+@media (prefers-reduced-motion:reduce){.live i{animation:none} .bar i{transition:none}}
+</style>
+</head><body>
+<div class="wrap">
+  <header class="mast">
+    <div class="logo" role="img" aria-label="Robert Michael Realty"></div>
+    <nav class="cap" aria-label="Sections">
+      <a href="#issue">Brochure</a><a href="#ask">Ask</a>
+    </nav>
+  </header>
+  <div class="issue cap"><span>Open House · Sunday, October 25 · 2–4 PM</span><span>Skyridge · Nashville, Tennessee</span></div>
+
+  <!-- issue -->
+  <section class="issue-sec" id="issue">
+    <div class="sec-head">
+      <div><div class="cap kicker">Property brochure</div><h2>4524 Skywood, page by page.</h2></div>
+      <span class="cap">Tap the page or swipe to turn</span>
+    </div>
+    <div class="book-wrap">
+      <div>
+        <div class="book" id="book" tabindex="0" aria-label="Open house booklet, use arrow keys to turn pages"></div>
+        <div class="book-ctl">
+          <button class="btn" id="bkPrev" type="button">Back</button>
+          <button class="btn solid" id="bkNext" type="button">Turn page</button>
+          <span class="mono" id="bkCount" style="font-size:13px"></span>
+        </div>
+      </div>
+      <div class="toc" id="toc"></div>
+    </div>
+  </section>
+
+  <!-- concierge -->
+  <section class="concierge" id="ask" aria-label="Ask about this home">
+    <aside>
+      <span class="cap live"><i></i> Concierge online</span>
+      <h2>Ask 4524 anything.</h2>
+      <p>Type a question or tap one below. Answers come from the listing record; anything it can't confirm goes straight to Robert.</p>
+    </aside>
+    <div class="console">
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <form class="ask" id="askForm" autocomplete="off">
+        <label for="q">Your question</label>
+        <input id="q" name="q" placeholder="What would I pay each month?" maxlength="200">
+        <button type="submit">Ask</button>
+      </form>
+    </div>
+  </section>
+
+  <p style="margin-block:8px 28px"><a class="btn solid" href="4524_Skywood_Lane_Brochure.pdf" download>Download the brochure (PDF)</a></p>
+  <footer class="fine">
+    <span>Listing courtesy of Conner Parks, The Homestead Group. Source: Realtracs, as of October 25, 2026. Information deemed reliable but not guaranteed; buyers should verify all details.</span>
+    <span>The concierge answers from the listing record and is not legal, lending or inspection advice.</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+/* ---------- concierge ---------- */
+const TEXT_ROBERT = "Text Robert";
+const KB = [
+  {k:/\bac\b|a\/c|air cond|hvac|heat|cool|compressor|condition|issue|problem|disclos|repair|inspect/i, a:"The seller's disclosure notes one item: the AC compressor has had issues. It's under the builder's warranty, testing is done, and parts are on order. Everything else on the disclosure is marked clear. Robert can share the disclosure and the latest on the repair.", h:true},
+  {k:/\byear|built|\bage\b|\bnew\b|\bold\b|how old/i, a:"It's nearly new. The listing and the disclosure list different build years (2023 and 2024), so Robert will confirm the exact year with the listing agent.", h:true},
+  {k:/hoa|association|dues|fee/i, a:"The HOA is $193 a month and covers exterior maintenance and grounds. There's a $300 transfer fee at closing. Trash is billed separately."},
+  {k:/tax/i, a:"Property taxes are $2,675 a year, about $223 a month."},
+  {k:/month|afford|cost to own|carry/i, a:"Beyond the mortgage and insurance, the fixed costs are the HOA at $193 a month and property taxes of $2,675 a year, about $223 a month. That's roughly $416 a month together. Trash is billed separately. For a full payment estimate, Robert can connect you with a lender in minutes.", h:true},
+  {k:/fha|va\b|loan|financ|mortgage|lender|down|closing cost/i, a:"The listing agent confirmed it's FHA approved. As a general guide, FHA needs about 3.5% down, conventional about 5%, and VA can be 0% for eligible buyers, with closing costs often near 4%. Every situation is different, so a lender should run your numbers. Robert can introduce you to one.", h:true},
+  {k:/school/i, a:"The assigned schools are Bellshire Elementary Design Center, Madison Middle and Hunters Lane High. Assignments can change, so confirm with Metro Nashville Public Schools."},
+  {k:/loft|office|flex/i, a:"The loft sits at the top of the stairs. It's open flex space: a home office, a second living room or a play area."},
+  {k:/garage|park|driveway|\bcars?\b/i, a:"A one-car attached garage with an epoxy floor and overhead storage, plus a driveway space."},
+  {k:/applian|fridge|refrigerator|washer|dryer|stove|range|dishwasher|microwave/i, a:"Per the listing, everything stays: refrigerator, electric range, microwave, dishwasher, disposal, washer and dryer."},
+  {k:/\bpets?\b|\bdogs?\b|\bcats?\b/i, a:"Pets are permitted. For any breed or size limits, Robert can get the HOA rules."},
+  {k:/\brent|invest|airbnb|lease|cash flow|yield/i, a:"Long-term rentals are allowed. Skyridge 3-bedrooms have leased for $1,900 to $2,200 a month over the past year. After the HOA and taxes, that's roughly a 5.5% return before insurance, vacancy and repairs. Those are past leases, not a projection."},
+  {k:/safe|crime|demograph|diverse|who lives|neighborhood like|area like/i, a:"I can't characterize who lives in a neighborhood or how safe it is. For crime data, Metro Nashville Police publishes it, and the best read on a neighborhood is visiting at different times of day.", h:false},
+  {k:/offer|negotiat|lower|best price|motivat|why selling|bottom|deal|concession/i, a:"The seller will consider any offer. Robert can walk you through comps and how to write a strong one, and he'll get it to the listing agent.", h:true},
+  {k:/comp|value|worth|sold|market|neighbor/i, a:"Seven Skyridge homes closed since June at $202 to $245 per square foot, all within 3% of asking. The closest matches are on this street: 4544 Skywood at $219 a foot and 4539 Skywood at $238. This home is $231. The full list is on the comps page of the brochure."},
+  {k:/open house|when|time|today|sunday|address|where|direction/i, a:"The open house is Sunday, October 25, from 2 to 4 PM at 4524 Skywood Lane, Nashville 37207, in Skyridge. Robert will be there."},
+  {k:/patio|yard|back|outdoor|fire/i, a:"Out back there's a coated patio slab, a fire pit and a privacy fence."},
+  {k:/price|asking|cost|how much|list/i, a:"It's offered at $369,900, which works out to $231 per square foot. The two townhomes that sold on this street this fall went for $219 and $238 a foot, so it sits right between them with more space than either."},
+  {k:/tour|showing|see it|visit|private/i, a:"Robert can set up a private showing any day this week. Send a text with a couple of times that work.", h:true},
+  {k:/agent|realtor|represent/i, a:"Already working with an agent? Bring them along or have them contact the listing agent, Conner Parks at The Homestead Group. If you're not, Robert can represent you.", h:true},
+  {k:/\bsq|square|size|\bbig|space|\bbed|bath|room/i, a:"3 bedrooms, 2.5 baths and about 1,600 square feet (builder figure), plus a loft. Main level: a 20 × 15 great room, 15 × 10 kitchen and a half bath. Upstairs: a 14 × 13 primary suite with a double-vanity bath, two 11 × 10 bedrooms, a full hall bath and laundry."}
+];
+const CHIPS = ["What would I pay monthly?","How does the price compare?","Tell me about the rooms","Is it FHA approved?","Any known issues?","Can I rent it out?"];
+const log = document.getElementById("log"), chips = document.getElementById("chips"), form = document.getElementById("askForm"), q = document.getElementById("q");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let busy = false;
+
+function add(cls, text){ const d = document.createElement("div"); d.className = "msg " + cls; d.textContent = text; log.appendChild(d); log.scrollTop = log.scrollHeight; return d; }
+function handoff(question){
+  const body = encodeURIComponent(`Hi Robert, I'm interested in 4524 Skywood Ln. ${question ? "Question: " + question : ""}`);
+  const w = document.createElement("div"); w.className = "handoff";
+  w.innerHTML = `<a class="btn solid" href="sms:+16617139667?&body=${body}">${TEXT_ROBERT}</a><span class="mono" style="font-size:13px">661-713-9667</span><button class="btn" type="button" data-copy="661-713-9667">Copy number</button>`;
+  return w;
+}
+function answer(text, withHandoff, question){
+  return new Promise(res=>{
+    const d = document.createElement("div"); d.className = "msg bot";
+    const who = document.createElement("span"); who.className = "who"; who.textContent = "CONCIERGE · 4524";
+    const body = document.createElement("span"); d.append(who, body); log.appendChild(d);
+    let i = 0;
+    const done = ()=>{ body.textContent = text; if (withHandoff) d.appendChild(handoff(question)); log.scrollTop = log.scrollHeight; busy=false; res(); };
+    if (reduce) return done();
+    const tick = ()=>{ i += 3; body.textContent = text.slice(0,i); log.scrollTop = log.scrollHeight; if (i < text.length) setTimeout(tick, 12); else done(); };
+    tick();
+  });
+}
+function respond(raw){
+  const text = raw.trim(); if (!text || busy) return; busy = true;
+  add("you", text);
+  const hit = KB.find(e=>e.k.test(text));
+  setTimeout(()=>{
+    if (hit) answer(hit.a, !!hit.h, text);
+    else answer("Good question. I don't have that in the listing record, so I've set it up as a text to Robert. He'll get you a real answer.", true, text);
+  }, reduce ? 0 : 380);
+}
+CHIPS.forEach(c=>{ const b = document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=c; b.onclick=()=>respond(c); chips.appendChild(b); });
+form.addEventListener("submit", e=>{ e.preventDefault(); respond(q.value); q.value=""; });
+answer("Welcome to 4524 Skywood. It's a 3-bed, 2.5-bath end unit with a loft, offered at $369,900, and the open house is Sunday from 2 to 4. Ask me about costs, rooms, financing, the market or anything else.", false);
+
+
+
+/* ---------- flip-book ---------- */
+(function(){
+  const P=[["bk_fly-1","The cover"],["bk_fly-2","Inside 4524"],["bk_bills-1","Bills & fees"],["bk_comps-1","The comps"],["bk_color-2","For the kids: Design your spooky house"]];
+  const book=document.getElementById("book"), toc=document.getElementById("toc"); let at=0;
+  book.innerHTML=P.map((p,i)=>`<div class="leaf" style="z-index:${P.length-i}"><img src="img/${p[0]}.jpg" alt="${p[1]}"></div>`).join("");
+  toc.innerHTML=P.map((p,i)=>`<button type="button" data-p="${i}">${p[1]}<span>${String(i+1).padStart(2,"0")}</span></button>`).join("");
+  const leaves=[...book.children], tb=[...toc.children];
+  function go(n){ at=Math.max(0,Math.min(P.length-1,n));
+    leaves.forEach((l,i)=>{ const t=i<at; l.classList.toggle("turned",t); l.style.zIndex=t?i:P.length-i; });
+    tb.forEach((b,i)=>b.classList.toggle("on",i===at));
+    document.getElementById("bkCount").textContent=`Page ${at+1} of ${P.length}`; }
+  document.getElementById("bkNext").onclick=()=>go(at+1===P.length?0:at+1);
+  document.getElementById("bkPrev").onclick=()=>go(at-1);
+  toc.addEventListener("click",e=>{const b=e.target.closest("[data-p]"); if(b) go(+b.dataset.p);});
+  book.addEventListener("click",e=>{ const r=book.getBoundingClientRect(); go(e.clientX-r.left<r.width/3?at-1:at+1); });
+  book.addEventListener("keydown",e=>{ if(e.key==="ArrowRight")go(at+1); if(e.key==="ArrowLeft")go(at-1); });
+  let x=null; book.addEventListener("touchstart",e=>{x=e.touches[0].clientX},{passive:true});
+  book.addEventListener("touchend",e=>{ if(x===null)return; const d=e.changedTouches[0].clientX-x; if(Math.abs(d)>40) go(at+(d<0?1:-1)); x=null; });
+  go(0);
+})();
+
+
+/* ---------- copy ---------- */
+function toast(m){ const t=document.createElement("div"); t.className="toast"; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),1800); }
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-copy]"); if (!b) return;
+  const v = b.dataset.copy;
+  const fallback = ()=>{ const r=document.createRange(); const n=b.previousElementSibling; if(n){ r.selectNodeContents(n); const s=getSelection(); s.removeAllRanges(); s.addRange(r);} toast("Selected. Copy it from here"); };
+  try { navigator.clipboard.writeText(v).then(()=>toast("Copied " + v), fallback); } catch(_) { fallback(); }
+});
+})();
+
+</script>
+</body></html>
