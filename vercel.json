@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/4524-skywood/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/leads", "destination": "/index.html" }
+  ]
+}
