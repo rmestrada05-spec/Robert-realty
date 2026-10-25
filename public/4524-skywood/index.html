@@ -288,8 +288,8 @@ footer p+p{margin-top:6px}
 
 <script>
 (function(){
-/* Where sign-ins are sent. Paste the Google Apps Script web-app URL here. */
-var LEADS_URL = "";
+/* Sign-ins go to the same Google Sheet as the relocation lead bot. */
+var LEADS_URL = "https://script.google.com/macros/s/AKfycbx0ydpC9WHAL9So3pVHta0gjcH_CL-eu9yeCD7OAvaGOcl1kFBboBVytoGqzKZW8pvuZQ/exec";
 
 var door = document.getElementById("door"), form = document.getElementById("signin"), err = document.getElementById("err");
 var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -324,12 +324,11 @@ form.addEventListener("submit", function(e){
   if (digits.length !== 10){ err.textContent = "Please enter a 10-digit mobile number."; form.phone.focus(); return; }
   err.textContent = "";
   var phone = "(" + digits.slice(0,3) + ") " + digits.slice(3,6) + "-" + digits.slice(6);
-  if (LEADS_URL){
-    try {
-      fetch(LEADS_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain"},
-        body: JSON.stringify({name:name, phone:phone, property:"4524 Skywood Ln", source:"Open house page", page:location.href})});
-    } catch(_){}
-  }
+  try {
+    var q = new URLSearchParams({name:name, location:"Open house: 4524 Skywood Ln", homeStatus:"", income:"",
+      timeline:"Open house 10/25", beds:"", homeStyle:"", tnLocation:"Skyridge, Nashville", contactType:"call", contact:phone});
+    new Image().src = LEADS_URL + "?" + q.toString();
+  } catch(_){}
   remember("in");
   reveal(name.split(/\s+/)[0]);
 });
