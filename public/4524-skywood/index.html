@@ -107,12 +107,17 @@
   /* ============ ACT I — THE DOORS (gate) — white, to match the card ============ */
   .gate{position:fixed; inset:0; z-index:50; overflow:hidden}
   .door{position:absolute; top:0; bottom:0; width:50.4%; background:var(--gate);
-    transition:transform 1.5s cubic-bezier(.76,0,.24,1)}
-  .door.l{left:0; background:linear-gradient(90deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset -1px 0 0 rgba(20,19,15,.04)}
-  .door.r{right:0; background:linear-gradient(270deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset 1px 0 0 rgba(20,19,15,.04)}
-  .seam{position:absolute; top:0; bottom:0; left:50%; width:1px; transform:translateX(-50%); z-index:3;
-    background:linear-gradient(180deg,transparent,var(--seam),transparent); opacity:.9;
-    box-shadow:0 0 18px 2px rgba(20,19,15,.05); transition:opacity .6s}
+    transition:transform 1.5s cubic-bezier(.76,0,.24,1), background .7s ease, box-shadow .7s ease}
+  .door.l{left:0}
+  .door.r{right:0}
+  .gate.arming .door.l{background:linear-gradient(90deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset -1px 0 0 rgba(20,19,15,.04)}
+  .gate.arming .door.r{background:linear-gradient(270deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset 1px 0 0 rgba(20,19,15,.04)}
+  .seam{position:absolute; top:0; bottom:0; left:50%; width:1px; z-index:3;
+    background:linear-gradient(180deg,transparent 0%,var(--ink) 16%,var(--ink) 84%,transparent 100%);
+    opacity:0; transform:translateX(-50%) scaleY(.14); transform-origin:center center;
+    box-shadow:0 0 18px 2px rgba(20,19,15,.05);
+    transition:opacity .38s ease, transform .85s cubic-bezier(.76,0,.24,1)}
+  .gate.arming .seam{opacity:1; transform:translateX(-50%) scaleY(1)}
   .gate-inner{position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-align:center; color:var(--ongate);
     padding:max(26px,env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-left,0px)) max(26px,env(safe-area-inset-bottom,0px));
@@ -131,6 +136,7 @@
   .g-btn:hover{background:var(--ink); color:#fff; border-color:var(--ink)}
   .g-note{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--ongate-dim); text-transform:uppercase; margin-top:18px}
 
+  .gate.arming .gate-inner{opacity:0; transform:translateY(-8px); pointer-events:none}
   .gate.open .door.l{transform:translateX(-101%)}
   .gate.open .door.r{transform:translateX(101%)}
   .gate.open .seam{opacity:0}
@@ -271,9 +277,13 @@
   }
 
   function openDoors(){
-    gate.classList.add("open");
     var done=function(){ gate.style.display="none"; body.classList.remove("locked"); };
-    if(reduce){ done(); } else { setTimeout(done,1550); }
+    if(reduce){ gate.classList.add("arming","open"); done(); return; }
+    gate.classList.add("arming");            // the seam cuts in at the middle
+    setTimeout(function(){
+      gate.classList.add("open");            // then the doors part from it
+      setTimeout(done,1550);
+    },1050);
   }
 
   // Returning guest — don't re-gate
