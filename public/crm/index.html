@@ -12,7 +12,7 @@
 <style>
   :root{
     --quartz:#f4f3ef; --card:#ffffff; --ink:#14130f; --body:#48453d; --muted:#8c887e;
-    --hair:#e4e1d8; --hair-2:#d8d5cc; --accent:#9a7b3f; --hot:#9a3f3f; --hot-bg:#f4ece9;
+    --hair:#e4e1d8; --hair-2:#d8d5cc; --accent:#9a7b3f; --hot:#8a6a33; --hot-bg:#f1ece0; --err:#9a6a62;
     --sans:"Inter","Helvetica Neue",Arial,sans-serif; --mono:"DM Mono",ui-monospace,Menlo,monospace;
     color-scheme:light;
   }
@@ -41,7 +41,7 @@
     text-transform:uppercase; padding:15px; transition:.2s}
   .gate button:hover{background:var(--ink); color:#fff}
   .gate .err{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--hot); margin-top:16px; min-height:12px}
+    color:var(--err); margin-top:16px; min-height:12px}
 
   /* ===== App ===== */
   .app{display:none; padding-top:max(26px,env(safe-area-inset-top))}
@@ -75,7 +75,7 @@
   .lead .meta .house{color:var(--accent)}
   .badge{font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; text-transform:uppercase;
     padding:3px 8px; border:1px solid var(--hair-2); color:var(--muted); border-radius:2px; white-space:nowrap}
-  .badge.hot{color:var(--hot); border-color:var(--hot); background:var(--hot-bg)}
+  .badge.hot{color:var(--hot); border-color:var(--hot); background:transparent}
   .act{display:flex; gap:8px; flex:none}
   .act a{width:40px; height:40px; display:grid; place-items:center; border:1px solid var(--hair-2); color:var(--ink);
     text-decoration:none; border-radius:50%; transition:.15s}
