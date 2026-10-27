@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sable · Leads</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500&family=DM+Mono:wght@300;400&display=swap">
+<style>
+  :root{
+    --quartz:#f4f3ef; --card:#ffffff; --ink:#14130f; --body:#48453d; --muted:#8c887e;
+    --hair:#e4e1d8; --hair-2:#d8d5cc; --accent:#9a7b3f; --hot:#9a3f3f; --hot-bg:#f4ece9;
+    --sans:"Inter","Helvetica Neue",Arial,sans-serif; --mono:"DM Mono",ui-monospace,Menlo,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--quartz); color:var(--body); font-family:var(--sans); font-weight:300;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    padding-left:max(18px,env(safe-area-inset-left)); padding-right:max(18px,env(safe-area-inset-right));
+    padding-bottom:max(28px,env(safe-area-inset-bottom))}
+  .wrap{max-width:860px; margin:0 auto}
+  .micro{font-family:var(--mono); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted)}
+
+  /* ===== Gate ===== */
+  .gate{position:fixed; inset:0; z-index:20; background:var(--quartz); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; padding:24px}
+  .gate .mark{font-family:var(--mono); color:var(--accent); font-size:20px; margin-bottom:26px}
+  .gate h1{font-family:var(--sans); font-weight:200; letter-spacing:-.02em; color:var(--ink);
+    font-size:clamp(30px,8vw,46px); margin:0 0 6px}
+  .gate p{color:var(--muted); font-size:13px; margin:0 0 30px}
+  .gate form{display:flex; flex-direction:column; gap:12px; width:min(320px,86vw)}
+  .gate input{background:transparent; border:0; border-bottom:1px solid var(--hair-2); color:var(--ink);
+    font-family:var(--sans); font-weight:300; font-size:16px; letter-spacing:.3em; text-align:center; padding:13px 2px}
+  .gate input:focus{outline:none; border-bottom-color:var(--ink)}
+  .gate button{margin-top:16px; background:transparent; border:1px solid var(--ink); color:var(--ink);
+    cursor:pointer; font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.3em;
+    text-transform:uppercase; padding:15px; transition:.2s}
+  .gate button:hover{background:var(--ink); color:#fff}
+  .gate .err{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--hot); margin-top:16px; min-height:12px}
+
+  /* ===== App ===== */
+  .app{display:none; padding-top:max(26px,env(safe-area-inset-top))}
+  .head{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    padding-bottom:22px; border-bottom:1px solid var(--hair-2)}
+  .head .title{font-family:var(--sans); font-weight:200; letter-spacing:-.02em; color:var(--ink);
+    font-size:clamp(30px,7vw,46px); line-height:1}
+  .head .sig{font-family:var(--mono); font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent)}
+  .counts{display:flex; gap:28px; margin-top:6px}
+  .counts div b{font-family:var(--sans); font-weight:200; font-size:26px; color:var(--ink); letter-spacing:-.02em}
+  .counts div span{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:3px}
+  .tools{display:flex; gap:10px; align-items:center}
+  .btn{background:transparent; border:1px solid var(--hair-2); color:var(--body); cursor:pointer;
+    font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; padding:9px 14px; transition:.15s}
+  .btn:hover{border-color:var(--ink); color:var(--ink)}
+
+  .filters{display:flex; gap:8px; flex-wrap:wrap; padding:20px 0 6px}
+  .chip{background:transparent; border:1px solid var(--hair-2); color:var(--muted); cursor:pointer;
+    font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:8px 13px; border-radius:2px; transition:.15s}
+  .chip:hover{color:var(--ink)}
+  .chip.on{background:var(--ink); border-color:var(--ink); color:#fff}
+  .chip .n{opacity:.55; margin-left:7px}
+
+  .list{margin-top:14px}
+  .lead{display:flex; align-items:center; gap:16px; padding:18px 4px; border-bottom:1px solid var(--hair)}
+  .lead .main{min-width:0; flex:1}
+  .lead .nm{font-family:var(--sans); font-weight:400; font-size:17px; color:var(--ink); letter-spacing:-.01em;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .lead .meta{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.04em; margin-top:5px;
+    display:flex; gap:10px; flex-wrap:wrap}
+  .lead .meta .house{color:var(--accent)}
+  .badge{font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; text-transform:uppercase;
+    padding:3px 8px; border:1px solid var(--hair-2); color:var(--muted); border-radius:2px; white-space:nowrap}
+  .badge.hot{color:var(--hot); border-color:var(--hot); background:var(--hot-bg)}
+  .act{display:flex; gap:8px; flex:none}
+  .act a{width:40px; height:40px; display:grid; place-items:center; border:1px solid var(--hair-2); color:var(--ink);
+    text-decoration:none; border-radius:50%; transition:.15s}
+  .act a:hover{border-color:var(--ink); background:var(--ink); color:#fff}
+  .act svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.5}
+
+  .state{text-align:center; padding:70px 20px; color:var(--muted)}
+  .state .big{font-family:var(--sans); font-weight:200; font-size:24px; color:var(--ink); letter-spacing:-.01em; margin-bottom:8px}
+  .state p{font-size:13px; max-width:40ch; margin:0 auto; line-height:1.6}
+  .foot{text-align:center; margin-top:40px; font-family:var(--mono); font-size:9px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--muted)}
+  .foot b{color:var(--accent); font-weight:400}
+  @media (max-width:560px){ .lead .act a{width:38px; height:38px} }
+</style>
+</head>
+<body>
+
+<!-- ===== Passcode gate ===== -->
+<div class="gate" id="gate">
+  <div class="mark">✦</div>
+  <h1>Leads</h1>
+  <p>Private access · Robert Michael Realty</p>
+  <form id="gateForm">
+    <input id="pass" type="password" inputmode="numeric" placeholder="PASSCODE" autocomplete="current-password" aria-label="Passcode">
+    <button type="submit">Enter</button>
+  </form>
+  <div class="err" id="gerr"></div>
+</div>
+
+<!-- ===== Dashboard ===== -->
+<div class="app" id="app">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="sig">✦ Sable · Lead Book</div>
+        <div class="title">Every lead, one place.</div>
+        <div class="counts" id="counts"></div>
+      </div>
+      <div class="tools">
+        <button class="btn" id="refresh">Refresh</button>
+        <button class="btn" id="export">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="filters" id="filters"></div>
+    <div class="list" id="list"></div>
+
+    <div class="foot">Powered by <b>✦ Sable Systems</b></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ============== CONFIG ============== */
+  // Same Apps Script project as lead capture; needs a read action (see setup notes).
+  var LEADS_URL = "https://script.google.com/macros/s/AKfycbx0ydpC9WHAL9So3pVHta0gjcH_CL-eu9yeCD7OAvaGOcl1kFBboBVytoGqzKZW8pvuZQ/exec";
+  var PASS_KEY  = "sable-crm-pass";
+  /* ==================================== */
+
+  var gate=document.getElementById("gate"), app=document.getElementById("app"),
+      gform=document.getElementById("gateForm"), gerr=document.getElementById("gerr");
+  var ALL=[], activeFilter="__all__", pass=null;
+
+  function stored(){ try{return localStorage.getItem(PASS_KEY);}catch(e){return null;} }
+  function remember(v){ try{localStorage.setItem(PASS_KEY,v);}catch(e){} }
+  function forget(){ try{localStorage.removeItem(PASS_KEY);}catch(e){} }
+
+  // ---- JSONP read (Apps Script, cross-origin safe) ----
+  function load(p, cb){
+    var done=false, cbName="__sable_"+Date.now();
+    var s=document.createElement("script");
+    var t=setTimeout(function(){ if(!done){ done=true; cleanup(); cb({ok:false,error:"timeout"}); } }, 12000);
+    function cleanup(){ clearTimeout(t); try{delete window[cbName];}catch(e){window[cbName]=undefined;} if(s.parentNode)s.parentNode.removeChild(s); }
+    window[cbName]=function(data){ if(done)return; done=true; cleanup(); cb(data||{ok:false}); };
+    s.onerror=function(){ if(done)return; done=true; cleanup(); cb({ok:false,error:"network"}); };
+    s.src=LEADS_URL+"?action=read&pass="+encodeURIComponent(p)+"&callback="+cbName+"&_="+Date.now();
+    document.body.appendChild(s);
+  }
+
+  // ---- normalize one row (schema-flexible) ----
+  function norm(r){
+    var get=function(keys){ for(var i=0;i<keys.length;i++){ for(var k in r){ if(k.toLowerCase().replace(/[^a-z]/g,"")===keys[i]){ return r[k]; } } } return ""; };
+    var listingRaw=get(["location","listing","house","property"])||"";
+    var listing=String(listingRaw).replace(/^open house:?\s*/i,"").trim()||"General";
+    var stage=String(get(["timeline","stage","source"])||"").trim();
+    return {
+      name:String(get(["name"])||"").trim(),
+      phone:String(get(["contact","phone","mobile","number"])||"").trim(),
+      listing:listing,
+      stage:stage,
+      ts:get(["timestamp","date","time","created"])||"",
+      hot:/private tour|requested/i.test(stage)
+    };
+  }
+
+  function digits(s){ return String(s).replace(/\D/g,""); }
+  function relTime(ts){
+    var d=new Date(ts); if(isNaN(d)) return "";
+    var diff=(Date.now()-d.getTime())/1000;
+    if(diff<60) return "just now";
+    if(diff<3600) return Math.floor(diff/60)+"m ago";
+    if(diff<86400) return Math.floor(diff/3600)+"h ago";
+    if(diff<604800) return Math.floor(diff/86400)+"d ago";
+    return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  }
+  function esc(s){ return String(s).replace(/[<>&"]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c];}); }
+
+  // ---- render ----
+  function listings(){
+    var m={}; ALL.forEach(function(l){ m[l.listing]=(m[l.listing]||0)+1; });
+    return Object.keys(m).sort().map(function(k){ return {name:k,n:m[k]}; });
+  }
+  function filtered(){
+    var rows = activeFilter==="__all__" ? ALL.slice() : ALL.filter(function(l){ return l.listing===activeFilter; });
+    rows.sort(function(a,b){ // hot first, then newest
+      if(a.hot!==b.hot) return a.hot?-1:1;
+      var ta=new Date(a.ts).getTime()||0, tb=new Date(b.ts).getTime()||0; return tb-ta;
+    });
+    return rows;
+  }
+  function renderCounts(){
+    var hot=ALL.filter(function(l){return l.hot;}).length;
+    var houses=listings().length;
+    document.getElementById("counts").innerHTML =
+      '<div><b>'+ALL.length+'</b><span>Total leads</span></div>'+
+      '<div><b>'+hot+'</b><span>Private tour</span></div>'+
+      '<div><b>'+houses+'</b><span>Open houses</span></div>';
+  }
+  function renderFilters(){
+    var f=document.getElementById("filters"), L=listings();
+    var html='<button class="chip '+(activeFilter==="__all__"?"on":"")+'" data-f="__all__">All<span class="n">'+ALL.length+'</span></button>';
+    L.forEach(function(x){ html+='<button class="chip '+(activeFilter===x.name?"on":"")+'" data-f="'+esc(x.name)+'">'+esc(x.name)+'<span class="n">'+x.n+'</span></button>'; });
+    f.innerHTML=html;
+    [].forEach.call(f.querySelectorAll(".chip"),function(c){ c.onclick=function(){ activeFilter=c.getAttribute("data-f"); renderFilters(); renderList(); }; });
+  }
+  function renderList(){
+    var el=document.getElementById("list"), rows=filtered();
+    if(!rows.length){ el.innerHTML='<div class="state"><div class="big">No leads yet.</div><p>They\'ll appear here the moment someone signs in at an open house.</p></div>'; return; }
+    el.innerHTML=rows.map(function(l){
+      var tel=digits(l.phone); var body=encodeURIComponent("Hi "+(l.name.split(/\s+/)[0]||"")+", this is Robert Michael — thanks for stopping by "+l.listing+".");
+      var act = tel ? '<div class="act">'+
+          '<a href="tel:+1'+tel+'" aria-label="Call"><svg viewBox="0 0 24 24"><path d="M4 5c0 8 7 15 15 15l2-3-4-2-2 2a12 12 0 0 1-6-6l2-2-2-4z"/></svg></a>'+
+          '<a href="sms:+1'+tel+'?&body='+body+'" aria-label="Text"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3v-3H4z"/></svg></a>'+
+        '</div>' : '';
+      return '<div class="lead">'+
+        '<div class="main">'+
+          '<div class="nm">'+(esc(l.name)||"—")+(l.hot?' <span class="badge hot">Private tour</span>':(l.stage?' <span class="badge">'+esc(l.stage)+'</span>':''))+'</div>'+
+          '<div class="meta"><span class="house">'+esc(l.listing)+'</span>'+(l.phone?'<span>'+esc(l.phone)+'</span>':'')+(relTime(l.ts)?'<span>'+relTime(l.ts)+'</span>':'')+'</div>'+
+        '</div>'+act+
+      '</div>';
+    }).join("");
+  }
+  function renderAll(){ renderCounts(); renderFilters(); renderList(); }
+
+  function fetchLeads(showErrInGate){
+    load(pass, function(data){
+      if(!data || data.ok===false){
+        if(showErrInGate){ gerr.textContent = data && data.error==="unauthorized" ? "Wrong passcode." : "Couldn't connect. Check setup."; }
+        else { document.getElementById("list").innerHTML='<div class="state"><div class="big">Couldn\'t load leads.</div><p>The read endpoint isn\'t live yet, or the passcode changed.</p></div>'; }
+        if(data && data.error==="unauthorized"){ forget(); }
+        return;
+      }
+      ALL=(data.leads||data.rows||[]).map(norm).filter(function(l){ return l.name||l.phone; });
+      remember(pass);
+      gate.style.display="none"; app.style.display="block";
+      gerr.textContent="";
+      renderAll();
+    });
+  }
+
+  // CSV export
+  document.getElementById("export") && (document.getElementById("export").onclick=function(){
+    var rows=filtered(), head=["Name","Phone","Listing","Stage","Time"];
+    var csv=[head.join(",")].concat(rows.map(function(l){
+      return [l.name,l.phone,l.listing,l.stage,l.ts].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(",");
+    })).join("\n");
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+    a.download="sable-leads-"+new Date().toISOString().slice(0,10)+".csv"; a.click();
+  });
+  document.getElementById("refresh") && (document.getElementById("refresh").onclick=function(){ fetchLeads(false); });
+
+  gform.addEventListener("submit",function(e){
+    e.preventDefault();
+    var v=document.getElementById("pass").value.trim();
+    if(!v){ gerr.textContent="Enter the passcode."; return; }
+    gerr.textContent="…"; pass=v; fetchLeads(true);
+  });
+
+  // Auto-enter if we remembered a passcode
+  var s=stored();
+  if(s){ pass=s; fetchLeads(false); }
+})();
+</script>
+</body>
+</html>
