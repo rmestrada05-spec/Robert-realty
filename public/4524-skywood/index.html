@@ -135,6 +135,8 @@
     font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.32em; text-transform:uppercase; padding:16px; transition:.25s}
   .g-btn:hover{background:var(--ink); color:#fff; border-color:var(--ink)}
   .g-note{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--ongate-dim); text-transform:uppercase; margin-top:18px}
+  .g-consent{font-family:var(--sans); font-weight:300; font-size:10.5px; line-height:1.55;
+    color:var(--ongate-dim); max-width:34ch; margin:20px auto 0; opacity:.85}
 
   .gate.arming .gate-inner{opacity:0; transform:translateY(-8px); pointer-events:none}
   .gate.open .door.l{transform:translateX(-101%)}
@@ -244,6 +246,8 @@
       <button class="g-btn" type="submit">Open the Doors</button>
     </form>
     <p id="gerr" style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b5282e;margin-top:14px;min-height:12px"></p>
+    <p class="g-consent">By opening the doors you agree that Robert Michael may contact you about
+      this property by call or text. Message and data rates may apply. Reply STOP to opt out.</p>
     <p class="g-note">4524 Skywood Lane · Nashville</p>
   </div>
 </div>
