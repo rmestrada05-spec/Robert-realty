@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sable</title>
+<meta name="description" content="The open house, reimagined.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400&family=DM+Mono:wght@300;400&display=swap">
+<style>
+  :root{
+    --quartz:#f4f3ef; --ink:#14130f; --body:#48453d; --muted:#8c887e;
+    --hair:#e0ddd4; --accent:#9a7b3f;
+    --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+    --mono:"DM Mono",ui-monospace,Menlo,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--quartz); color:var(--body); font-family:var(--sans); font-weight:300;
+    font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:max(48px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-left))
+            max(48px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-right))}
+  .wrap{max-width:420px; text-align:center}
+  .stem{display:block; width:1.7px; height:52px; background:var(--ink); margin:0 auto 28px; border-radius:1px}
+  .mark{font-family:var(--sans); font-weight:200; font-size:30px; letter-spacing:-.035em; color:var(--ink); line-height:1}
+  h1{font-family:var(--sans); font-weight:200; font-size:clamp(26px,7vw,34px); letter-spacing:-.03em;
+    line-height:1.18; color:var(--ink); margin:46px 0 0}
+  p{color:var(--muted); font-size:15px; margin:18px auto 0; max-width:32ch}
+  .rule{height:1px; background:var(--hair); margin:40px auto; max-width:60px}
+  .foot{font-family:var(--mono); font-size:9.5px; letter-spacing:.26em; text-transform:uppercase; color:var(--muted)}
+  .foot a{color:var(--accent); text-decoration:none}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="stem" aria-hidden="true"></span>
+    <div class="mark">sable</div>
+    <h1>The open house, reimagined.</h1>
+    <p>A white card on the counter. Buyers tap it. Every name lands in one place.</p>
+    <div class="rule"></div>
+    <p class="foot">For agents &middot; <a href="sms:+16617139667">661-713-9667</a></p>
+  </div>
+</body>
+</html>
