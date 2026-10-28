@@ -276,19 +276,6 @@
   </footer>
 </main>
 
-<!-- ===================== ACT I : THE DOORS ===================== -->
-<div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Private viewing — sign in to enter">
-  <div class="door l"></div>
-  <div class="door r"></div>
-  <div class="seam"></div>
-  <div class="gate-inner">
-    <span class="micro">By Invitation</span>
-    <div class="g-addr">4524 Skywood Lane</div>
-    <p class="g-sub">A private viewing.</p>
-    <p class="g-note">4524 Skywood Lane · Nashville</p>
-  </div>
-</div>
-
 <script>
 (function(){
   /* ===================== CONFIG — edit per listing ===================== */
@@ -298,7 +285,7 @@
   var KEY = "rmr-4524-guest";
   /* ===================================================================== */
 
-  var body=document.body, gate=document.getElementById("gate"),
+  var body=document.body,
       form=document.getElementById("gateForm"), endCta=document.getElementById("endCta"),
       err=document.getElementById("gerr"),
       topbar=document.getElementById("topbar"), sheet=document.getElementById("sheet"),
@@ -319,21 +306,9 @@
     }catch(_){}
   }
 
-  function openDoors(){
-    var done=function(){ gate.style.display="none"; body.classList.remove("locked");
-      if(topbar)topbar.classList.add("show"); };
-    if(reduce){ gate.classList.add("arming","open"); done(); return; }
-    gate.classList.add("arming");            // the seam cuts in at the middle
-    setTimeout(function(){
-      gate.classList.add("open");            // then the doors part from it
-      setTimeout(done,1550);
-    },1050);
-  }
-
-  // One tap is the whole price of entry: the doors open on their own
-  if(seen()==="signed"){ gate.style.display="none"; if(topbar){topbar.classList.add("show"); markSigned();} }
-  else if(seen()){ gate.style.display="none"; if(topbar)topbar.classList.add("show"); }
-  else{ body.classList.add("locked"); setTimeout(openDoors, 900); remember("in"); }
+  // No gate. The tap lands on the brochure itself.
+  if(topbar) topbar.classList.add("show");
+  if(seen()==="signed") markSigned();
 
   function markSigned(){ if(signinBtn){ signinBtn.textContent="Signed in"; signinBtn.classList.add("done"); } }
 
