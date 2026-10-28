@@ -5,26 +5,32 @@
 window.SABLE = {
 
   // --- who ---------------------------------------------------
-  slug:      "mireyaestrada",         // must match the folder name
-  firstName: "Mireya",                // used in the activation greeting
+  slug:      "mireyaestrada",
+  firstName: "Mireya",
   fullName:  "Mireya Estrada",
-  phone:     "",                       // her number, for buyer CTAs
-  brokerage: "",                       // her brokerage, for the page footer
+  phone:     "",                       // her cell, as buyers should see it
+  brokerage: "",                       // brokerage name — required on CA advertising
+  license:   "",                       // CA DRE # — required on CA advertising
+  email:     "realtormestrada@gmail.com",
+
+  // --- her brand (from her mood board) -----------------------
+  brand: {
+    accent:  "#0517FB",                // the one color in her palette
+    display: "'Playfair Display', Georgia, serif",
+    body:    "'Jost', 'Inter', sans-serif",
+    script:  "'Allura', cursive",      // stand-in for Retro Signature (not a web font)
+    tagline: "let ME help you",
+    portrait:"img/mireya.jpg"
+  },
 
   // --- mode --------------------------------------------------
   // "openhouse" -> the card opens the listing named below
   // "landing"   -> the card opens landingUrl (blog-card tier)
   mode: "openhouse",
-
-  // --- open house mode --------------------------------------
-  // folder name of the listing to open, e.g. "4524-skywood"
   listing: "",                         // her listing folder, once photos land
-
-  // --- landing mode -----------------------------------------
-  landingUrl: "",                      // her blog or site
+  landingUrl: "",
 
   // --- leads -------------------------------------------------
-  // Her own Apps Script web-app URL. Each agent gets their own
-  // sheet + deployment, so no agent ever sees another's leads.
+  // Her own Apps Script web-app URL — her own sheet, her own deployment.
   leadsUrl: ""
 };

@@ -8,121 +8,133 @@
 
 <script src="config.js"></script>
 <script>
-/* The card's one fixed URL.
-   A buyer tapping the chip is routed onward before anything paints.
-   The agent's welcome lives at ?hello — printed inside the box, not on the chip. */
+/* The card's one fixed URL. A buyer tapping the chip is routed onward
+   before anything paints. The agent's welcome lives at ?hello. */
 (function(){
   var S = window.SABLE || {};
   var q = location.search.toLowerCase();
-  var welcome = q.indexOf("hello") > -1 || q.indexOf("welcome") > -1 || q.indexOf("activate") > -1;
-  if (welcome) return;
-
+  if (q.indexOf("hello") > -1 || q.indexOf("welcome") > -1 || q.indexOf("activate") > -1) return;
   if (S.mode === "landing" && S.landingUrl) { location.replace(S.landingUrl); return; }
   if (S.listing) { location.replace("./" + S.listing + "/"); return; }
-  /* nothing configured yet — fall through to the holding page below */
 })();
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400&family=DM+Mono:wght@300;400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&family=Allura&family=DM+Mono:wght@300&display=swap">
 <style>
   :root{
-    --quartz:#f4f3ef; --ink:#14130f; --body:#48453d; --muted:#8c887e;
-    --hair:#e0ddd4; --accent:#9a7b3f;
-    --sans:"Inter","Helvetica Neue",Arial,sans-serif;
-    --mono:"DM Mono",ui-monospace,Menlo,monospace;
+    --quartz:#f4f3ef; --ink:#14130f; --body:#4a4740; --muted:#8c887e;
+    --hair:#e0ddd4;
+    --accent:#0517FB;                      /* hers */
+    --display:'Playfair Display',Georgia,serif;
+    --body-f:'Jost','Inter',sans-serif;
+    --script:'Allura',cursive;
+    --mono:'DM Mono',ui-monospace,Menlo,monospace;
     color-scheme:light;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--quartz); color:var(--body); font-family:var(--sans); font-weight:300;
-    font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
-    padding:max(42px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-left))
+  body{background:var(--quartz); color:var(--body); font-family:var(--body-f); font-weight:300;
+    font-size:16px; line-height:1.7; -webkit-font-smoothing:antialiased;
+    padding:max(40px,env(safe-area-inset-top)) max(22px,env(safe-area-inset-left))
             max(44px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-right))}
   .wrap{max-width:430px; margin:0 auto}
 
-  .stem{display:block; width:1.7px; height:46px; background:var(--ink); margin:0 auto 26px; border-radius:1px}
-  .mark{font-family:var(--sans); font-weight:200; font-size:27px; letter-spacing:-.035em;
+  /* --- Sable's mark stays, quietly: the product, not the person --- */
+  .stem{display:block; width:1.7px; height:34px; background:var(--ink); margin:0 auto 14px; border-radius:1px}
+  .mk{font-family:'Jost',sans-serif; font-weight:300; font-size:15px; letter-spacing:.02em;
     color:var(--ink); text-align:center; line-height:1}
 
+  /* --- hers --- */
+  .port{width:132px; height:168px; margin:46px auto 0; overflow:hidden;
+    border-radius:66px 66px 6px 6px; background:var(--hair)}
+  .port img{width:100%; height:100%; object-fit:cover; display:block}
+
+  h1{font-family:var(--display); font-weight:400; font-size:clamp(34px,9vw,44px);
+    line-height:1.04; color:var(--accent); margin:26px 0 0; text-align:center; letter-spacing:-.005em}
+  .re{font-family:var(--script); font-size:28px; color:var(--accent); text-align:center;
+    margin:2px 0 0; line-height:1}
+  .tag{font-family:var(--script); font-size:25px; color:var(--ink); text-align:center; margin:22px 0 0; line-height:1}
+
+  .rule{height:1px; background:var(--hair); margin:38px 0}
+
   .kick{font-family:var(--mono); font-size:9.5px; letter-spacing:.3em; text-transform:uppercase;
-    color:var(--accent); text-align:center; margin:44px 0 0}
-  h1{font-family:var(--sans); font-weight:200; font-size:clamp(30px,8.5vw,40px); letter-spacing:-.03em;
-    line-height:1.12; color:var(--ink); margin:14px 0 0; text-align:center}
-  .sub{text-align:center; color:var(--muted); font-size:14.5px; margin:16px auto 0; max-width:34ch}
+    color:var(--muted); text-align:center}
+  .lede{text-align:center; color:var(--body); font-size:15.5px; margin:14px auto 0; max-width:33ch}
 
-  .rule{height:1px; background:var(--hair); margin:40px 0}
-
-  .row{display:flex; gap:16px; padding:18px 0; border-bottom:1px solid var(--hair)}
+  .row{display:flex; gap:16px; padding:17px 0; border-bottom:1px solid var(--hair)}
   .row:last-of-type{border-bottom:0}
-  .row .n{font-family:var(--mono); font-size:10px; letter-spacing:.14em; color:var(--accent); padding-top:4px; flex:none}
-  .row .t{min-width:0}
-  .row .t b{display:block; font-weight:400; font-size:15.5px; color:var(--ink); letter-spacing:-.01em}
-  .row .t span{display:block; font-size:14px; color:var(--muted); margin-top:3px}
+  .row .n{font-family:var(--mono); font-size:10px; letter-spacing:.14em; color:var(--accent); padding-top:5px; flex:none}
+  .row .t b{display:block; font-family:var(--display); font-weight:400; font-size:17px; color:var(--ink); letter-spacing:-.005em}
+  .row .t span{display:block; font-size:14.5px; color:var(--muted); margin-top:3px; line-height:1.6}
 
-  .cta{display:block; text-align:center; text-decoration:none; margin-top:34px;
-    border:1px solid var(--ink); color:var(--ink); background:transparent;
-    font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  .cta{display:block; text-align:center; text-decoration:none; margin-top:32px;
+    border:1px solid var(--accent); color:var(--accent); background:transparent;
+    font-family:var(--body-f); font-weight:400; font-size:11px; letter-spacing:.26em; text-transform:uppercase;
     padding:17px 20px; transition:.16s}
-  .cta:hover{background:var(--ink); color:#fff}
+  .cta:hover{background:var(--accent); color:#fff}
 
   .url{font-family:var(--mono); font-size:12.5px; color:var(--ink); text-align:center;
-    margin-top:30px; letter-spacing:.01em; word-break:break-all}
+    margin-top:28px; word-break:break-all}
   .url span{color:var(--muted)}
 
-  .foot{text-align:center; margin-top:52px; font-family:var(--mono); font-size:9px;
-    letter-spacing:.26em; text-transform:uppercase; color:var(--muted)}
-  .foot b{color:var(--accent); font-weight:400}
+  .foot{text-align:center; margin-top:48px; padding-top:22px; border-top:1px solid var(--hair);
+    font-family:var(--mono); font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted)}
+  .foot b{color:var(--ink); font-weight:400}
+  .lic{font-family:var(--body-f); font-size:11px; color:var(--muted); text-align:center; margin-top:10px; letter-spacing:.02em}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="stem" aria-hidden="true"></span>
-  <div class="mark">sable</div>
 
-  <p class="kick">Your card is live</p>
-  <h1 id="greet">Welcome.</h1>
-  <p class="sub">This card is yours now. Here is what it does and where your leads go.</p>
+  <span class="stem" aria-hidden="true"></span>
+  <div class="mk">sable</div>
+
+  <div class="port"><img id="port" src="img/mireya.jpg" alt="Mireya Estrada"></div>
+  <h1 id="nm">Mireya<br>Estrada</h1>
+  <div class="re">real estate</div>
+  <p class="tag" id="tag">let ME help you</p>
 
   <div class="rule"></div>
 
-  <div class="row">
-    <span class="n">01</span>
-    <div class="t"><b>Set it out at the open house</b>
-    <span>Leave it on the counter. Buyers tap it with their phone — no app, no QR code.</span></div>
-  </div>
-  <div class="row">
-    <span class="n">02</span>
-    <div class="t"><b>The doors open for a name and a number</b>
-    <span>Your listing appears behind a gate. They sign in, then the home unfolds.</span></div>
-  </div>
-  <div class="row">
-    <span class="n">03</span>
-    <div class="t"><b>Every lead lands in your Lead Book</b>
-    <span>Private to you. Anyone who asks for a private tour is flagged at the top.</span></div>
-  </div>
-  <div class="row">
-    <span class="n">04</span>
-    <div class="t"><b>The card never changes</b>
-    <span>One URL, printed once. We change the listing behind it whenever yours does.</span></div>
+  <p class="kick">Your card is live</p>
+  <p class="lede">Everything below happens the moment someone taps it.</p>
+
+  <div style="margin-top:28px">
+    <div class="row"><span class="n">01</span><div class="t"><b>Set it out</b>
+      <span>Leave the card on the counter at your open house. Buyers tap it with their phone — no app, no QR code.</span></div></div>
+    <div class="row"><span class="n">02</span><div class="t"><b>The doors open for a name</b>
+      <span>Your listing appears behind a gate. They leave a name and a number, and the home unfolds.</span></div></div>
+    <div class="row"><span class="n">03</span><div class="t"><b>Every lead lands in your Lead Book</b>
+      <span>Private to you. Anyone who asks for a private tour is flagged at the top of the list.</span></div></div>
+    <div class="row"><span class="n">04</span><div class="t"><b>The card never changes</b>
+      <span>One URL, printed once. We change the listing behind it whenever yours does.</span></div></div>
   </div>
 
-  <a class="cta" id="book" href="./crm/">Open my Lead Book</a>
+  <a class="cta" href="./crm/">Open my Lead Book</a>
 
-  <p class="url" id="cardurl"><span>sable.estate/</span>—</p>
+  <p class="url"><span>sable.estate/</span>mireyaestrada</p>
+  <p class="lic" id="lic"></p>
 
   <div class="foot">Powered by <b>&#10022; Sable Systems</b></div>
 </div>
 
 <script>
 (function(){
-  var S = window.SABLE || {};
-  if (S.firstName) document.getElementById("greet").textContent = "Welcome, " + S.firstName + ".";
-  if (S.slug) {
-    document.getElementById("cardurl").innerHTML =
-      '<span>sable.estate/</span>' + S.slug;
+  var S = window.SABLE || {}, B = S.brand || {};
+  if (B.accent) document.documentElement.style.setProperty("--accent", B.accent);
+  if (B.tagline) document.getElementById("tag").textContent = B.tagline;
+  if (B.portrait) document.getElementById("port").src = B.portrait;
+  if (S.fullName) {
+    var p = S.fullName.split(/\s+/);
+    document.getElementById("nm").innerHTML = p.length > 1
+      ? p[0] + "<br>" + p.slice(1).join(" ") : S.fullName;
   }
+  var bits = [];
+  if (S.brokerage) bits.push(S.brokerage);
+  if (S.license)   bits.push("CA DRE #" + S.license);
+  document.getElementById("lic").textContent = bits.join("  ·  ");
 })();
 </script>
 </body>
