@@ -144,6 +144,29 @@
   .gate.open .seam{opacity:0}
   .gate.open .gate-inner{opacity:0; transform:translateY(-10px); pointer-events:none}
 
+  .topbar{position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center;
+    justify-content:space-between; padding:14px max(18px,env(safe-area-inset-right)) 12px max(18px,env(safe-area-inset-left));
+    background:linear-gradient(180deg, rgba(244,243,239,.92), rgba(244,243,239,0));
+    opacity:0; transform:translateY(-8px); transition:opacity .6s ease .2s, transform .6s ease .2s; pointer-events:none}
+  .topbar.show{opacity:1; transform:none; pointer-events:auto}
+  .tb-addr{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted)}
+  .tb-btn{background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer;
+    font-family:var(--sans); font-weight:400; font-size:10px; letter-spacing:.24em; text-transform:uppercase;
+    padding:10px 16px; transition:.2s}
+  .tb-btn:hover{background:var(--ink); color:#fff}
+  .tb-btn.done{border-color:var(--accent); color:var(--accent); pointer-events:none}
+
+  .sheet{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center;
+    background:rgba(20,19,15,.32); padding:22px}
+  .sheet.on{display:flex}
+  .sheet-card{position:relative; background:var(--quartz); max-width:380px; width:100%;
+    padding:38px 30px 30px; text-align:center}
+  .sheet-card h3{font-family:var(--sans); font-weight:200; font-size:30px; letter-spacing:-.025em;
+    color:var(--ink); margin:12px 0 0}
+  .sheet-sub{color:var(--muted); font-size:13.5px; margin:10px 0 24px}
+  .sheet-close{position:absolute; top:10px; right:14px; background:none; border:0; color:var(--muted);
+    font-size:26px; line-height:1; cursor:pointer; padding:6px}
+
   @media (prefers-reduced-motion:reduce){
     .door,.seam,.gate-inner{transition:none}
   }
@@ -153,6 +176,31 @@
 
 <!-- ===================== ACT II : THE RESIDENCE ===================== -->
 <!-- ======= EDIT PER LISTING: swap images in /img, address, stats, copy, comps ======= -->
+<div class="topbar" id="topbar">
+  <span class="tb-addr">4524 Skywood Ln</span>
+  <button class="tb-btn" id="signinBtn" type="button">Sign in</button>
+</div>
+
+<!-- the guest book: opened by choice, never forced -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sign the guest book">
+  <div class="sheet-card">
+    <span class="micro" style="color:var(--accent)">The Guest Book</span>
+    <h3>Leave your name.</h3>
+    <p class="sheet-sub">So Robert can follow up about this home — nothing more.</p>
+    <form class="g-form" id="gateForm" autocomplete="on">
+      <label for="gn" style="position:absolute;left:-9999px">Your name</label>
+      <input id="gn" name="name" placeholder="Your name" autocomplete="name" required>
+      <label for="gp" style="position:absolute;left:-9999px">Mobile number</label>
+      <input id="gp" name="phone" type="tel" inputmode="tel" placeholder="Mobile number" autocomplete="tel" required>
+      <button class="g-btn" type="submit">Sign the book</button>
+    </form>
+    <p id="gerr" style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b5282e;margin-top:14px;min-height:12px"></p>
+    <p class="g-consent">By signing you agree that Robert Michael may contact you about
+      this property by call or text. Message and data rates may apply. Reply STOP to opt out.</p>
+    <button class="sheet-close" id="sheetClose" type="button" aria-label="Close">&times;</button>
+  </div>
+</div>
+
 <main class="residence">
   <section class="r-hero">
     <img src="img/exterior.jpg" alt="Front elevation of 4524 Skywood Lane, an end-unit townhome">
@@ -236,18 +284,7 @@
   <div class="gate-inner">
     <span class="micro">By Invitation</span>
     <div class="g-addr">4524 Skywood Lane</div>
-    <p class="g-sub">A private viewing. Leave your name to open the doors.</p>
-    <div class="g-rule"></div>
-    <form class="g-form" id="gateForm" autocomplete="on">
-      <label for="gn" style="position:absolute;left:-9999px">Your name</label>
-      <input id="gn" name="name" placeholder="Your name" autocomplete="name" required>
-      <label for="gp" style="position:absolute;left:-9999px">Mobile number</label>
-      <input id="gp" name="phone" type="tel" inputmode="tel" placeholder="Mobile number" autocomplete="tel" required>
-      <button class="g-btn" type="submit">Open the Doors</button>
-    </form>
-    <p id="gerr" style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b5282e;margin-top:14px;min-height:12px"></p>
-    <p class="g-consent">By opening the doors you agree that Robert Michael may contact you about
-      this property by call or text. Message and data rates may apply. Reply STOP to opt out.</p>
+    <p class="g-sub">A private viewing.</p>
     <p class="g-note">4524 Skywood Lane · Nashville</p>
   </div>
 </div>
@@ -263,7 +300,9 @@
 
   var body=document.body, gate=document.getElementById("gate"),
       form=document.getElementById("gateForm"), endCta=document.getElementById("endCta"),
-      err=document.getElementById("gerr");
+      err=document.getElementById("gerr"),
+      topbar=document.getElementById("topbar"), sheet=document.getElementById("sheet"),
+      signinBtn=document.getElementById("signinBtn");
   var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
   var guest=null;
 
@@ -281,7 +320,8 @@
   }
 
   function openDoors(){
-    var done=function(){ gate.style.display="none"; body.classList.remove("locked"); };
+    var done=function(){ gate.style.display="none"; body.classList.remove("locked");
+      if(topbar)topbar.classList.add("show"); };
     if(reduce){ gate.classList.add("arming","open"); done(); return; }
     gate.classList.add("arming");            // the seam cuts in at the middle
     setTimeout(function(){
@@ -290,12 +330,20 @@
     },1050);
   }
 
-  // Returning guest — don't re-gate
-  if(seen()){ gate.style.display="none"; }
-  else{ body.classList.add("locked");
-        setTimeout(function(){ try{document.getElementById("gn").focus({preventScroll:true});}catch(e){} },300); }
+  // One tap is the whole price of entry: the doors open on their own
+  if(seen()==="signed"){ gate.style.display="none"; if(topbar){topbar.classList.add("show"); markSigned();} }
+  else if(seen()){ gate.style.display="none"; if(topbar)topbar.classList.add("show"); }
+  else{ body.classList.add("locked"); setTimeout(openDoors, 900); remember("in"); }
 
-  // Close 1 — the door (cold): captured before they see the home
+  function markSigned(){ if(signinBtn){ signinBtn.textContent="Signed in"; signinBtn.classList.add("done"); } }
+
+  // The guest book — opened by choice
+  if(signinBtn) signinBtn.addEventListener("click",function(){ sheet.classList.add("on");
+    setTimeout(function(){ try{document.getElementById("gn").focus({preventScroll:true});}catch(e){} },120); });
+  var sheetClose=document.getElementById("sheetClose");
+  if(sheetClose) sheetClose.addEventListener("click",function(){ sheet.classList.remove("on"); });
+  sheet.addEventListener("click",function(e){ if(e.target===sheet) sheet.classList.remove("on"); });
+
   form.addEventListener("submit",function(e){
     e.preventDefault();
     var name=document.getElementById("gn").value.trim();
@@ -307,9 +355,10 @@
     var phone="("+digits.slice(0,3)+") "+digits.slice(3,6)+"-"+digits.slice(6);
     guest={name:name,phone:phone};
     try{ window._lead={name:name,phone:phone,listing:LISTING}; }catch(_){}
-    sendLead(name,phone,"Door sign-in");
-    remember("in");
-    openDoors();
+    sendLead(name,phone,"Guest book sign-in");
+    remember("signed");
+    markSigned();
+    sheet.classList.remove("on");
   });
 
   // Close 2 — the end (warm): same visitor, asking for a private showing
