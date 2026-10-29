@@ -53,14 +53,19 @@ window.LISTING_CFG = {
 
      Keep labels under ~22 characters. The bar auto-fits past that by
      dropping the square footage, but a label that forces it every
-     rotation makes the stats flicker.                                     */
+     rotation makes the stats flicker.
+
+     Never offer something they're already doing. "See it privately" fails
+     this: they are standing in it. The offer has to be about after.
+
+     Slot one is always the plain one. A label that rotates on its own
+     starts reading as a banner, and people don't press banners — so the
+     first thing it says is what it is.                                    */
   offers: [
-    { id:"moves",
-      label:"Text me if it moves",
-      head:"I'll tell you if it moves.",
-      sub:"Price change, offer in, under contract — you'll know the day it happens, " +
-          "and it stops when the house does.",
-      cta:"Keep me posted" },
+    { id:"text",
+      label:"Tap to text",
+      sms:true,
+      body:"Hi {first}, I'm at {address} — " },
 
     { id:"like",
       label:"Show me three like it",
@@ -68,11 +73,12 @@ window.LISTING_CFG = {
       sub:"Three homes near this one, around this price, sent once. Not a drip campaign.",
       cta:"Send the three" },
 
-    { id:"private",
-      label:"See it privately",
-      head:"Come back when it's quiet.",
-      sub:"Walk it on your own time, no one else in the room. Takes about twenty minutes.",
-      cta:"Set it up" }
+    { id:"qualify",
+      label:"Text me if I qualify",
+      head:"Find out what you qualify for.",
+      sub:"I'll put you in front of the lender I work with. They'll text you a real " +
+          "number instead of a guess — usually same day.",
+      cta:"Connect me" }
   ],
 
   // One line of flex, shown above the form. Every other card in the
