@@ -38,25 +38,41 @@ window.LISTING_CFG = {
 
      The last entry is the direct line. It takes no information
      from the buyer and it cannot be removed — every Sable card
-     resolves to a human. The roll ends there and stays there.  */
-  offers: [
-    { id:"plan",
-      label:"Get the floor plan",
-      head:"Floor plan.",
-      sub:"Tell me where to send it and it's on its way.",
-      cta:"Send it over" },
+     resolves to a human. The roll ends there and stays there.
 
-    { id:"numbers",
-      label:"Get the numbers",
-      head:"The numbers.",
-      sub:"Payment estimate, taxes, HOA — what it actually costs to live here.",
-      cta:"Send the numbers" },
+     An offer is only worth a phone number if it CANNOT be had by standing
+     in the room. A floor plan can be screenshotted. A price is on the wall.
+     Asking for a number to hand back something already on the page is why
+     sign-in sheets sit empty.
+
+     Everything worth a number happens AFTER they leave. That is the whole
+     category, and it is the job: what this house does next, and what else
+     there is. Bound every one of them — people don't withhold a number
+     because they don't want the thing, they withhold it because they're
+     afraid of the campaign. Say where it ends and they'll give it.        */
+  offers: [
+    { id:"moves",
+      label:"Text me if it moves",
+      head:"I'll tell you if it moves.",
+      sub:"Price change, offer in, under contract — you'll know the day it happens, " +
+          "and it stops when the house does.",
+      cta:"Keep me posted" },
+
+    { id:"like",
+      label:"Show me three like it",
+      head:"Three like it.",
+      sub:"Three homes near this one, around this price, sent once. Not a drip campaign.",
+      cta:"Send the three" },
 
     { id:"direct",
       label:"Just text {first}",
       sms:true,
       body:"Hi {first}, I'm at {address}." }
   ],
+
+  // One line of flex, shown above the form. Every other card in the
+  // business makes you sign in to see the house. This one didn't.
+  note: "Nothing on this page was locked.",
 
   // Shown under the form, every time. Not fine print.
   consent: "{agent} may text or call you about this home. " +

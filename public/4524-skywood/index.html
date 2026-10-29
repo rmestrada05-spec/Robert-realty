@@ -141,7 +141,7 @@
   .g-addr{font-family:var(--sans); font-weight:200; font-size:clamp(34px,8.5vw,80px); line-height:.98; color:var(--ink); margin:22px 0 0; letter-spacing:-.035em}
   .g-sub{font-family:var(--sans); font-weight:300; font-size:clamp(15px,2.2vw,18px); color:var(--muted); margin:16px 0 0; max-width:32ch}
   .g-rule{width:34px; height:1px; background:var(--ongate-dim); opacity:.6; margin:40px 0 30px}
-  .g-form{display:flex; flex-direction:column; gap:12px; width:min(340px,86vw)}
+  .g-form{display:flex; flex-direction:column; gap:12px; width:100%; max-width:340px; margin-inline:auto}
   .g-form input{width:100%; background:transparent; border:0; border-bottom:1px solid var(--hair);
     color:var(--ink); font-family:var(--sans); font-weight:300; font-size:15px; letter-spacing:.01em; padding:13px 2px; text-align:center}
   .g-form input::placeholder{color:var(--ongate-dim); letter-spacing:.14em; font-size:12px; text-transform:uppercase}
@@ -182,7 +182,8 @@
     -webkit-tap-highlight-color:transparent}
   /* The roll: the old line leaves upward, the next rises into its place. A departure
      board, not a strobe — the brand's own vertical axis, moving. No colour change. */
-  .tb-roll{position:relative; display:block; height:16px; overflow:hidden; width:100%}
+  .tb-roll{position:relative; display:block; height:16px; overflow:hidden}
+  .tb-size{display:block; height:16px; line-height:16px; visibility:hidden; white-space:nowrap}
   .tb-lbl{position:absolute; left:0; right:0; top:0; line-height:16px; text-align:center;
     transform:translateY(0); opacity:1; will-change:transform;
     transition:transform .54s cubic-bezier(.16,1,.3,1), opacity .34s ease}
@@ -204,6 +205,8 @@
   .sheet-card h3{font-family:var(--sans); font-weight:200; font-size:30px; letter-spacing:-.025em;
     color:var(--ink); margin:12px 0 0}
   .sheet-sub{color:var(--muted); font-size:13.5px; margin:10px 0 24px}
+  .sheet-note{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 20px}
   .sheet-or{font-family:var(--sans); font-weight:300; font-size:13px; color:var(--muted); margin:18px 0 0}
   .sheet-or a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--hair); padding-bottom:2px}
   .sheet-close{position:absolute; top:10px; right:14px; background:none; border:0; color:var(--muted);
@@ -222,7 +225,7 @@
 <div class="topbar" id="topbar">
   <span class="tb-stats"><b id="tbPrice">$369,900</b><i id="tbBB">3 · 2.5</i><i id="tbSf">1,600 ft</i></span>
   <button class="tb-btn" id="signinBtn" type="button">
-    <span class="tb-roll" id="tbRoll"><span class="tb-lbl" id="tbLbl">Get the floor plan</span></span>
+    <span class="tb-roll" id="tbRoll"><span class="tb-size" id="tbSize" aria-hidden="true">Show me three like it</span><span class="tb-lbl" id="tbLbl">Text me if it moves</span></span>
   </button>
 </div>
 
@@ -232,6 +235,7 @@
     <span class="micro" style="color:var(--accent)" id="shKicker">4524 Skywood Lane</span>
     <h3 id="shHead">What's the payment?</h3>
     <p class="sheet-sub" id="shSub">Leave your number and I'll text you the estimate — taxes, HOA, all of it.</p>
+    <p class="sheet-note" id="shNote"></p>
     <form class="g-form" id="gateForm" autocomplete="on">
       <label for="gn" style="position:absolute;left:-9999px">Your name</label>
       <input id="gn" name="name" placeholder="Your name" autocomplete="name" required>
@@ -420,12 +424,15 @@
     put("tbSf",    CFG.sqft ? CFG.sqft+" ft" : null);
     put("shKicker",CFG.address);
     put("shConsent", fill(CFG.consent));
+    put("shNote",    fill(CFG.note));
     var tel=document.getElementById("shTel");
     if(tel && CFG.phoneRaw){ tel.href="sms:"+CFG.phoneRaw.replace(/[^\d+]/g,"");
                              tel.textContent=CFG.phone||CFG.phoneRaw; }
     else if(tel && tel.parentNode){ tel.parentNode.style.display="none"; }
-    var first=ASKS[0]; var lbl=document.getElementById("tbLbl");
+    var first=ASKS[0], lbl=document.getElementById("tbLbl"), sz=document.getElementById("tbSize");
     if(lbl&&first) lbl.textContent=first.btn;
+    if(sz) sz.textContent = ASKS.reduce(function(a,o){
+      return (o.btn||"").length > a.length ? o.btn : a; },"");
   })();
 
   if(seen()==="signed") markSigned(); else startCycle();
@@ -452,7 +459,12 @@
     if(shCta)  shCta.textContent  = a.cta;
     sheet.classList.add("on"); body.classList.add("locked");
     setTimeout(function(){ try{document.getElementById("gn").focus({preventScroll:true});}catch(e){} },120); });
-  function closeSheet(){ sheet.classList.remove("on"); body.classList.remove("locked"); }
+  function closeSheet(){
+    sheet.classList.remove("on"); body.classList.remove("locked");
+    // closed without choosing — they've seen one option, show the rest. Resuming
+    // is helpful; restarting from the top would be hunting them.
+    if(!askTimer && askIdx < LAST && seen()!=="signed") startCycle();
+  }
   var sheetClose=document.getElementById("sheetClose");
   if(sheetClose) sheetClose.addEventListener("click",closeSheet);
   sheet.addEventListener("click",function(e){ if(e.target===sheet) closeSheet(); });
