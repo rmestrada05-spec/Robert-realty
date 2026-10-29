@@ -45,7 +45,7 @@
   .col{max-width:1080px; margin:0 auto}
   .narrow{max-width:720px; margin:0 auto}
 
-  .r-hero{position:relative; height:92vh; min-height:520px; overflow:hidden}
+  .r-hero{position:relative; height:76vh; min-height:440px; overflow:hidden}
   .r-hero img{width:100%; height:100%; object-fit:cover; filter:saturate(.96) contrast(1.02)}
   .r-hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,10,11,.34) 0%,rgba(10,10,11,0) 30%,rgba(10,10,11,.72) 100%)}
   .r-hero .plate{position:absolute; left:0; right:0; bottom:0; z-index:2; color:#f7f6f2; padding-block:0 max(36px,env(safe-area-inset-bottom,0px)); text-shadow:0 1px 24px rgba(10,10,11,.45)}
@@ -59,13 +59,25 @@
   .stats b{display:block; font-family:var(--sans); font-size:clamp(26px,4vw,40px); color:var(--ink); font-weight:200; letter-spacing:-.025em; line-height:1}
   .stats .label{margin-top:12px; font-size:9.5px}
 
-  .intro{padding-block:clamp(70px,11vw,130px)}
+  .intro{padding-block:clamp(44px,8vw,110px)}
   .intro .label{display:block; text-align:center; margin-bottom:26px; color:var(--accent)}
-  .intro p{font-size:clamp(23px,3.4vw,33px); line-height:1.4; color:var(--ink); text-align:center; font-weight:200; letter-spacing:-.01em}
+  .intro p{font-size:clamp(21px,3.2vw,31px); line-height:1.38; color:var(--ink); text-align:center; font-weight:200; letter-spacing:-.01em}
 
   .shot{margin-block:clamp(14px,3vw,30px)}
   .shot.full img{width:100%; height:auto}
+  .shot{position:relative}
   .shot .cap{display:flex; justify-content:space-between; align-items:baseline; gap:16px; max-width:1080px; margin:16px auto 0; flex-wrap:wrap}
+  @media (max-width:720px){
+    .shot.full{position:relative}
+    .shot.full img{display:block}
+    .shot.full .cap{position:absolute; left:0; right:0; bottom:0; margin:0;
+      padding-top:54px; padding-bottom:18px; color:#f7f6f2;
+      background:linear-gradient(180deg, rgba(10,10,11,0), rgba(10,10,11,.74));
+      text-shadow:0 1px 18px rgba(10,10,11,.5)}
+    .shot.full .cap h3{color:#fff}
+    .shot.full .cap .rt{color:rgba(247,246,242,.78)}
+    .shot.full .cap p{color:rgba(247,246,242,.92); font-size:16px; flex-basis:100%; margin-top:4px}
+  }
   .shot .cap h3{font-size:clamp(22px,3vw,30px); font-weight:300}
   .shot .cap .rt{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase}
   .shot .cap p{font-size:18px; color:var(--body); max-width:46ch; font-weight:300}
@@ -145,16 +157,21 @@
   .gate.open .gate-inner{opacity:0; transform:translateY(-10px); pointer-events:none}
 
   .topbar{position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center;
-    justify-content:space-between; padding:14px max(18px,env(safe-area-inset-right)) 12px max(18px,env(safe-area-inset-left));
-    background:linear-gradient(180deg, rgba(244,243,239,.92), rgba(244,243,239,0));
+    justify-content:space-between; padding:11px max(18px,env(safe-area-inset-right)) 11px max(18px,env(safe-area-inset-left));
+    background:rgba(244,243,239,.86); backdrop-filter:saturate(1.6) blur(14px);
+    -webkit-backdrop-filter:saturate(1.6) blur(14px); border-bottom:1px solid rgba(20,19,15,.07);
     opacity:0; transform:translateY(-8px); transition:opacity .6s ease .2s, transform .6s ease .2s; pointer-events:none}
   .topbar.show{opacity:1; transform:none; pointer-events:auto}
-  .tb-addr{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted)}
-  .tb-btn{background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer;
-    font-family:var(--sans); font-weight:400; font-size:10px; letter-spacing:.24em; text-transform:uppercase;
-    padding:10px 16px; transition:.2s}
-  .tb-btn:hover{background:var(--ink); color:#fff}
-  .tb-btn.done{border-color:var(--accent); color:var(--accent); pointer-events:none}
+  .tb-stats{display:flex; align-items:baseline; gap:11px; min-width:0}
+  .tb-stats b{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--ink); letter-spacing:-.01em}
+  .tb-stats i{font-family:var(--mono); font-style:normal; font-size:10px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  @media (max-width:360px){ .tb-stats i:last-child{display:none} }
+  .tb-btn{background:var(--ink); border:1px solid var(--ink); color:#fff; cursor:pointer;
+    font-family:var(--sans); font-weight:400; font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+    padding:9px 15px; transition:.2s; flex:none}
+  .tb-btn:hover{opacity:.84}
+  .tb-btn.done{background:transparent; border-color:var(--accent); color:var(--accent); pointer-events:none}
 
   .sheet{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center;
     background:rgba(20,19,15,.32); padding:22px}
@@ -177,8 +194,8 @@
 <!-- ===================== ACT II : THE RESIDENCE ===================== -->
 <!-- ======= EDIT PER LISTING: swap images in /img, address, stats, copy, comps ======= -->
 <div class="topbar" id="topbar">
-  <span class="tb-addr">4524 Skywood Ln</span>
-  <button class="tb-btn" id="signinBtn" type="button">Sign in</button>
+  <span class="tb-stats"><b>$369,900</b><i>3 · 2.5</i><i>1,600 ft</i></span>
+  <button class="tb-btn" id="signinBtn" type="button">Check in</button>
 </div>
 
 <!-- the guest book: opened by choice, never forced -->
