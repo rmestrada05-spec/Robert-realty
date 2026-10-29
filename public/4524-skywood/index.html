@@ -178,11 +178,17 @@
   @media (max-width:380px){ .tb-stats i:last-child{display:none} }
   .tb-btn{background:var(--ink); border:1px solid var(--ink); color:#fff; cursor:pointer;
     font-family:var(--sans); font-weight:400; font-size:12.5px; letter-spacing:-.005em;
-    padding:9px 15px; transition:background .09s linear, color .09s linear; flex:none;
-    white-space:nowrap; -webkit-tap-highlight-color:transparent}
-  /* the cut: 90ms inversion, same move the identity sting makes. Motion catches the
-     eye in peripheral vision; the label behind it is always a real question. */
-  .tb-btn.cut{background:#fff; color:var(--ink)}
+    padding:9px 15px; flex:none; white-space:nowrap; overflow:hidden;
+    -webkit-tap-highlight-color:transparent}
+  /* The roll: the old line leaves upward, the next rises into its place. A departure
+     board, not a strobe — the brand's own vertical axis, moving. No colour change. */
+  .tb-roll{position:relative; display:block; height:16px; overflow:hidden; width:100%}
+  .tb-lbl{position:absolute; left:0; right:0; top:0; line-height:16px; text-align:center;
+    transform:translateY(0); opacity:1; will-change:transform;
+    transition:transform .54s cubic-bezier(.16,1,.3,1), opacity .34s ease}
+  .tb-lbl.enter{transform:translateY(115%); opacity:0}
+  .tb-lbl.leave{transform:translateY(-115%); opacity:0}
+  @media (prefers-reduced-motion:reduce){ .tb-lbl{transition:none} }
   .tb-btn:hover{opacity:.84}
   .tb-btn.done{background:transparent; border-color:var(--accent); color:var(--accent); pointer-events:none}
 
@@ -198,6 +204,8 @@
   .sheet-card h3{font-family:var(--sans); font-weight:200; font-size:30px; letter-spacing:-.025em;
     color:var(--ink); margin:12px 0 0}
   .sheet-sub{color:var(--muted); font-size:13.5px; margin:10px 0 24px}
+  .sheet-or{font-family:var(--sans); font-weight:300; font-size:13px; color:var(--muted); margin:18px 0 0}
+  .sheet-or a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--hair); padding-bottom:2px}
   .sheet-close{position:absolute; top:10px; right:14px; background:none; border:0; color:var(--muted);
     font-size:26px; line-height:1; cursor:pointer; padding:6px}
 
@@ -205,14 +213,17 @@
     .door,.seam,.gate-inner{transition:none}
   }
 </style>
+<script src="listing.js"></script>
 </head>
 <body>
 
 <!-- ===================== ACT II : THE RESIDENCE ===================== -->
 <!-- ======= EDIT PER LISTING: swap images in /img, address, stats, copy, comps ======= -->
 <div class="topbar" id="topbar">
-  <span class="tb-stats"><b>$369,900</b><i>3 · 2.5</i><i>1,600 ft</i></span>
-  <button class="tb-btn" id="signinBtn" type="button">What's the payment?</button>
+  <span class="tb-stats"><b id="tbPrice">$369,900</b><i id="tbBB">3 · 2.5</i><i id="tbSf">1,600 ft</i></span>
+  <button class="tb-btn" id="signinBtn" type="button">
+    <span class="tb-roll" id="tbRoll"><span class="tb-lbl" id="tbLbl">Get the floor plan</span></span>
+  </button>
 </div>
 
 <!-- the guest book: opened by choice, never forced -->
@@ -229,8 +240,8 @@
       <button class="g-btn" type="submit">Text me the estimate</button>
     </form>
     <p id="gerr" style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b5282e;margin-top:14px;min-height:12px"></p>
-    <p class="g-consent">By signing you agree that Robert Michael may contact you about
-      this property by call or text. Message and data rates may apply. Reply STOP to opt out.</p>
+    <p class="sheet-or">or just text <a id="shTel" href="#">&nbsp;</a></p>
+    <p class="g-consent" id="shConsent"></p>
     <button class="sheet-close" id="sheetClose" type="button" aria-label="Close">&times;</button>
   </div>
 </div>
@@ -343,63 +354,99 @@
   // No gate. The tap lands on the brochure itself.
   if(topbar) topbar.classList.add("show");
 
-  /* ===== THE ASK =====================================================
-     A noun on the button ("Guest book", "Check in") describes the form, and
-     nobody taps a form. Each label below is a question the buyer already has,
-     so the tap is them asking rather than you collecting — and whichever one
-     is live when they tap rides along on the lead, so you know the intent
-     before you dial. Edit these three freely; everything else follows.
-     Only promise what you can actually send back.                        */
-  var ASKS = [
-    { btn:"What's the payment?",
-      head:"What's the payment?",
-      sub:"Leave your number and I'll text you the estimate — taxes, HOA, all of it.",
-      cta:"Text me the estimate", tag:"Asked: payment" },
-    { btn:"See the floor plan",
-      head:"Floor plan, sent.",
-      sub:"Name and number, and the full plan comes straight to your phone.",
-      cta:"Send the floor plan", tag:"Asked: floor plan" },
-    { btn:"Ask about this home",
-      head:"Ask me anything.",
-      sub:"Leave your name and I'll get back to you about this home — nothing more.",
-      cta:"Send it over", tag:"Asked: general" }
-  ];
-  var askIdx = 0, askTimer = null, CYCLES = 6;   // ~2 passes, then it settles
+  /* ===== THE OFFER ====================================================
+     Everything below is driven by listing.js. No agent name, number or
+     price is written into this file — a subscriber copies the folder,
+     edits one config, and the page is theirs.
+
+     A noun on the button ("Guest book", "Check in") describes the form,
+     and nobody taps a form. But a question that manufactures a gap
+     ("What's the payment?") converts by making someone anxious, and
+     that is not what this is. The labels are offers: things the agent
+     sends, from a brochure that was never locked in the first place.
+
+     The roll makes ONE pass and comes to rest on the direct line, which
+     asks for nothing. The last thing a buyer sees is a way to reach a
+     human, not a form.                                                 */
+  var CFG  = (window.LISTING_CFG || {});
+  var FIRST = (CFG.agent || "").trim().split(/\s+/)[0] || "me";
+  function fill(s){ return String(s||"")
+      .replace(/\{first\}/g, FIRST)
+      .replace(/\{agent\}/g, CFG.agent || "")
+      .replace(/\{address\}/g, CFG.address || ""); }
+
+  var ASKS = (CFG.offers || []).map(function(o){
+    return { btn:fill(o.label), head:fill(o.head), sub:fill(o.sub), cta:fill(o.cta),
+             sms:!!o.sms, body:fill(o.body), tag:"Asked: "+(o.id||"general") };
+  });
+  if(!ASKS.length) ASKS = [{ btn:"Text "+FIRST, sms:true, body:"", tag:"Asked: direct" }];
+
+  var askIdx = 0, askTimer = null;
+  var LAST = ASKS.length - 1;                  // the direct line — where it rests
   var shHead=document.getElementById("shHead"), shSub=document.getElementById("shSub"),
-      shCta=document.querySelector("#gateForm .g-btn");
+      shCta=document.querySelector("#gateForm .g-btn"),
+      roll=document.getElementById("tbRoll");
 
   function paintAsk(i){
-    askIdx = i % ASKS.length;
-    if(signinBtn && !signinBtn.classList.contains("done")) signinBtn.textContent = ASKS[askIdx].btn;
-  }
-  function cutTo(i){
-    if(!signinBtn || signinBtn.classList.contains("done")) return;
-    if(reduce){ paintAsk(i); return; }
-    signinBtn.classList.add("cut");                 // 90ms inverted flash — a cut, not a fade
-    setTimeout(function(){ paintAsk(i); },45);
-    setTimeout(function(){ signinBtn.classList.remove("cut"); },135);
+    askIdx = i;
+    var cur = roll && roll.querySelector(".tb-lbl");
+    if(!cur) return;
+    if(reduce){ cur.textContent = ASKS[askIdx].btn; return; }
+    var nxt = document.createElement("span");
+    nxt.className = "tb-lbl enter";
+    nxt.textContent = ASKS[askIdx].btn;
+    roll.appendChild(nxt);
+    void nxt.offsetHeight;                     // commit the start state
+    cur.className = "tb-lbl leave";            // old line exits upward
+    nxt.className = "tb-lbl";                  // next rises into its place
+    setTimeout(function(){ if(cur.parentNode) cur.parentNode.removeChild(cur); }, 620);
   }
   function startCycle(){
-    var n = 0;
+    if(ASKS.length < 2) return;
     askTimer = setInterval(function(){
-      if(++n > CYCLES || !signinBtn || signinBtn.classList.contains("done") ||
-         sheet.classList.contains("on")){ clearInterval(askTimer); askTimer=null; return; }
-      cutTo(askIdx + 1);
-    }, 3400);
+      if(!signinBtn || signinBtn.classList.contains("done") || sheet.classList.contains("on")){
+        stopCycle(); return; }
+      if(askIdx >= LAST){ stopCycle(); return; }   // one pass, then it rests
+      paintAsk(askIdx + 1);
+    }, 4200);
   }
   function stopCycle(){ if(askTimer){ clearInterval(askTimer); askTimer=null; } }
+
+  // --- hydrate from listing.js: nothing agent- or listing-specific is markup ---
+  (function(){
+    function put(id,v){ var e=document.getElementById(id); if(e&&v) e.textContent=v; }
+    put("tbPrice", CFG.price);
+    put("tbBB",    (CFG.beds&&CFG.baths) ? CFG.beds+" · "+CFG.baths : null);
+    put("tbSf",    CFG.sqft ? CFG.sqft+" ft" : null);
+    put("shKicker",CFG.address);
+    put("shConsent", fill(CFG.consent));
+    var tel=document.getElementById("shTel");
+    if(tel && CFG.phoneRaw){ tel.href="sms:"+CFG.phoneRaw.replace(/[^\d+]/g,"");
+                             tel.textContent=CFG.phone||CFG.phoneRaw; }
+    else if(tel && tel.parentNode){ tel.parentNode.style.display="none"; }
+    var first=ASKS[0]; var lbl=document.getElementById("tbLbl");
+    if(lbl&&first) lbl.textContent=first.btn;
+  })();
 
   if(seen()==="signed") markSigned(); else startCycle();
 
   function markSigned(){
     stopCycle();
-    if(signinBtn){ signinBtn.textContent="Thanks — he'll be in touch"; signinBtn.classList.add("done"); }
+    var cur = roll && roll.querySelector(".tb-lbl");
+    if(cur) cur.textContent = "Sent — "+FIRST+" will be in touch";
+    if(signinBtn) signinBtn.classList.add("done");
   }
 
-  // Opened by choice. The sheet answers whichever question was on the button.
+  // Opened by choice. The direct line takes nothing and opens SMS — if the
+  // button says "just text", it texts. Anything else is bait-and-switch.
   if(signinBtn) signinBtn.addEventListener("click",function(){
     stopCycle();
     var a = ASKS[askIdx];
+    if(a.sms){
+      var num = (CFG.phoneRaw||"").replace(/[^\d+]/g,"");
+      if(num) location.href = "sms:"+num+"?&body="+encodeURIComponent(a.body||"");
+      return;
+    }
     if(shHead) shHead.textContent = a.head;
     if(shSub)  shSub.textContent  = a.sub;
     if(shCta)  shCta.textContent  = a.cta;
