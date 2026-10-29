@@ -182,8 +182,13 @@
     -webkit-tap-highlight-color:transparent}
   /* The roll: the old line leaves upward, the next rises into its place. A departure
      board, not a strobe — the brand's own vertical axis, moving. No colour change. */
-  .tb-roll{position:relative; display:block; height:16px; overflow:hidden}
-  .tb-size{display:block; height:16px; line-height:16px; visibility:hidden; white-space:nowrap}
+  /* width rides the same curve as the roll, so the button breathes open and
+     shut as each line arrives. The size change is what catches the eye —
+     motion, not a colour strobe. */
+  .tb-roll{position:relative; display:block; height:16px; overflow:hidden;
+    transition:width .54s cubic-bezier(.16,1,.3,1)}
+  @media (prefers-reduced-motion:reduce){ .tb-roll{transition:none} }
+  .tb-size{position:absolute; visibility:hidden; white-space:nowrap; left:0; top:0; pointer-events:none}
   .tb-lbl{position:absolute; left:0; right:0; top:0; line-height:16px; text-align:center;
     transform:translateY(0); opacity:1; will-change:transform;
     transition:transform .54s cubic-bezier(.16,1,.3,1), opacity .34s ease}
@@ -391,8 +396,28 @@
       shCta=document.querySelector("#gateForm .g-btn"),
       roll=document.getElementById("tbRoll");
 
+  var LABW = [];
+  function measure(){
+    var sz=document.getElementById("tbSize"); if(!sz||!roll) return;
+    LABW = ASKS.map(function(o){ sz.textContent=o.btn; return Math.ceil(sz.offsetWidth)+1; });
+    sz.textContent="";
+  }
+  /* The mold can't police what an agent types into listing.js, so it yields:
+     if the widest label leaves the stats less than 14px of air, the square
+     footage steps aside. Price and beds/baths always survive. */
+  function autofit(){
+    var st=document.querySelector(".tb-stats"), sf=document.getElementById("tbSf");
+    if(!st||!sf||!topbar||!LABW.length) return;
+    sf.style.display="";
+    var pad=36, widest=Math.max.apply(null,LABW);
+    if(st.getBoundingClientRect().width + widest + pad + 14 > topbar.clientWidth)
+      sf.style.display="none";
+  }
+  addEventListener("resize", autofit);
+
   function paintAsk(i){
     askIdx = i;
+    if(roll && LABW[i]) roll.style.width = LABW[i]+"px";   // breathe to fit
     var cur = roll && roll.querySelector(".tb-lbl");
     if(!cur) return;
     if(reduce){ cur.textContent = ASKS[askIdx].btn; return; }
@@ -410,8 +435,7 @@
     askTimer = setInterval(function(){
       if(!signinBtn || signinBtn.classList.contains("done") || sheet.classList.contains("on")){
         stopCycle(); return; }
-      if(askIdx >= LAST){ stopCycle(); return; }   // one pass, then it rests
-      paintAsk(askIdx + 1);
+      paintAsk((askIdx + 1) % ASKS.length);        // constant rotation
     }, 4200);
   }
   function stopCycle(){ if(askTimer){ clearInterval(askTimer); askTimer=null; } }
@@ -429,10 +453,11 @@
     if(tel && CFG.phoneRaw){ tel.href="sms:"+CFG.phoneRaw.replace(/[^\d+]/g,"");
                              tel.textContent=CFG.phone||CFG.phoneRaw; }
     else if(tel && tel.parentNode){ tel.parentNode.style.display="none"; }
-    var first=ASKS[0], lbl=document.getElementById("tbLbl"), sz=document.getElementById("tbSize");
+    var first=ASKS[0], lbl=document.getElementById("tbLbl");
     if(lbl&&first) lbl.textContent=first.btn;
-    if(sz) sz.textContent = ASKS.reduce(function(a,o){
-      return (o.btn||"").length > a.length ? o.btn : a; },"");
+    measure();                       // per-label widths, so the button can animate
+    if(roll && LABW.length) roll.style.width = LABW[0]+"px";
+    autofit();                       // a long label must not crush the stats
   })();
 
   if(seen()==="signed") markSigned(); else startCycle();
@@ -441,6 +466,8 @@
     stopCycle();
     var cur = roll && roll.querySelector(".tb-lbl");
     if(cur) cur.textContent = "Sent — "+FIRST+" will be in touch";
+    if(roll){ var z=document.getElementById("tbSize");
+      if(z){ z.textContent=cur?cur.textContent:""; roll.style.width=(z.offsetWidth+2)+"px"; z.textContent=""; } }
     if(signinBtn) signinBtn.classList.add("done");
   }
 
@@ -463,7 +490,7 @@
     sheet.classList.remove("on"); body.classList.remove("locked");
     // closed without choosing — they've seen one option, show the rest. Resuming
     // is helpful; restarting from the top would be hunting them.
-    if(!askTimer && askIdx < LAST && seen()!=="signed") startCycle();
+    if(!askTimer && seen()!=="signed") startCycle();
   }
   var sheetClose=document.getElementById("sheetClose");
   if(sheetClose) sheetClose.addEventListener("click",closeSheet);

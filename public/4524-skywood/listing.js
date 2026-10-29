@@ -49,7 +49,11 @@ window.LISTING_CFG = {
      category, and it is the job: what this house does next, and what else
      there is. Bound every one of them — people don't withhold a number
      because they don't want the thing, they withhold it because they're
-     afraid of the campaign. Say where it ends and they'll give it.        */
+     afraid of the campaign. Say where it ends and they'll give it.
+
+     Keep labels under ~22 characters. The bar auto-fits past that by
+     dropping the square footage, but a label that forces it every
+     rotation makes the stats flicker.                                     */
   offers: [
     { id:"moves",
       label:"Text me if it moves",
@@ -64,10 +68,11 @@ window.LISTING_CFG = {
       sub:"Three homes near this one, around this price, sent once. Not a drip campaign.",
       cta:"Send the three" },
 
-    { id:"direct",
-      label:"Just text {first}",
-      sms:true,
-      body:"Hi {first}, I'm at {address}." }
+    { id:"private",
+      label:"See it privately",
+      head:"Come back when it's quiet.",
+      sub:"Walk it on your own time, no one else in the room. Takes about twenty minutes.",
+      cta:"Set it up" }
   ],
 
   // One line of flex, shown above the form. Every other card in the
