@@ -63,9 +63,10 @@
   .intro .label{display:block; text-align:center; margin-bottom:26px; color:var(--accent)}
   .intro p{font-size:clamp(21px,3.2vw,31px); line-height:1.38; color:var(--ink); text-align:center; font-weight:200; letter-spacing:-.01em}
 
-  .shot{margin-block:clamp(14px,3vw,30px)}
-  .shot.full img{width:100%; height:auto}
-  .shot{position:relative}
+  /* figure carries a UA default margin:1em 40px — kill the inline half or photos
+     sit in a 40px gutter while .duo sits at 22px. That mismatch is visible on phones. */
+  .shot{margin-block:clamp(14px,3vw,30px); margin-inline:0; position:relative}
+  .shot.full img{width:100%; height:auto; display:block}
   .shot .cap{display:flex; justify-content:space-between; align-items:baseline; gap:16px; max-width:1080px; margin:16px auto 0; flex-wrap:wrap}
   @media (max-width:720px){
     .shot.full{position:relative}
@@ -112,8 +113,10 @@
     .stats{grid-template-columns:1fr 1fr}
     .stats div:nth-child(3){border-left:0}
     .stats div:nth-child(n+3){border-top:1px solid var(--hair)}
-    .duo{grid-template-columns:1fr}
+    /* every photo edge-to-edge on a phone — one width, no gutters */
+    .duo{grid-template-columns:1fr; gap:clamp(14px,3vw,30px)}
     .duo img{aspect-ratio:4/3}
+    .duo.pad{padding-left:0; padding-right:0}
   }
 
   /* ============ ACT I — THE DOORS (gate) — white, to match the card ============ */
@@ -165,19 +168,33 @@
   .tb-stats{display:flex; align-items:baseline; gap:11px; min-width:0}
   .tb-stats b{font-family:var(--sans); font-weight:400; font-size:14px; color:var(--ink); letter-spacing:-.01em}
   .tb-stats i{font-family:var(--mono); font-style:normal; font-size:10px; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--muted); white-space:nowrap}
-  @media (max-width:360px){ .tb-stats i:last-child{display:none} }
+    text-transform:uppercase; color:var(--ink); white-space:nowrap}
+  /* the label is longer than a one-word button, so buy it room on small phones */
+  @media (max-width:430px){
+    .tb-stats{gap:8px}
+    .tb-stats b{font-size:13px}
+    .tb-btn{padding:9px 12px; font-size:12px}
+  }
+  @media (max-width:380px){ .tb-stats i:last-child{display:none} }
   .tb-btn{background:var(--ink); border:1px solid var(--ink); color:#fff; cursor:pointer;
-    font-family:var(--sans); font-weight:400; font-size:10px; letter-spacing:.2em; text-transform:uppercase;
-    padding:9px 15px; transition:.2s; flex:none}
+    font-family:var(--sans); font-weight:400; font-size:12.5px; letter-spacing:-.005em;
+    padding:9px 15px; transition:background .09s linear, color .09s linear; flex:none;
+    white-space:nowrap; -webkit-tap-highlight-color:transparent}
+  /* the cut: 90ms inversion, same move the identity sting makes. Motion catches the
+     eye in peripheral vision; the label behind it is always a real question. */
+  .tb-btn.cut{background:#fff; color:var(--ink)}
   .tb-btn:hover{opacity:.84}
   .tb-btn.done{background:transparent; border-color:var(--accent); color:var(--accent); pointer-events:none}
 
-  .sheet{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center;
+  /* inset:0 measures the LARGE viewport on iOS, so with the URL bar showing the card
+     centres against a taller box than you can see and reads low. dvh tracks the real one. */
+  .sheet{position:fixed; left:0; top:0; width:100%; height:100vh; height:100dvh; z-index:60;
+    display:none; align-items:center; justify-content:center; overflow-y:auto;
     background:rgba(20,19,15,.32); padding:22px}
   .sheet.on{display:flex}
   .sheet-card{position:relative; background:var(--quartz); max-width:380px; width:100%;
-    padding:38px 30px 30px; text-align:center}
+    margin:auto; padding:38px 30px 30px; text-align:center}
+  body.locked{overflow:hidden}
   .sheet-card h3{font-family:var(--sans); font-weight:200; font-size:30px; letter-spacing:-.025em;
     color:var(--ink); margin:12px 0 0}
   .sheet-sub{color:var(--muted); font-size:13.5px; margin:10px 0 24px}
@@ -195,21 +212,21 @@
 <!-- ======= EDIT PER LISTING: swap images in /img, address, stats, copy, comps ======= -->
 <div class="topbar" id="topbar">
   <span class="tb-stats"><b>$369,900</b><i>3 · 2.5</i><i>1,600 ft</i></span>
-  <button class="tb-btn" id="signinBtn" type="button">Check in</button>
+  <button class="tb-btn" id="signinBtn" type="button">What's the payment?</button>
 </div>
 
 <!-- the guest book: opened by choice, never forced -->
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Sign the guest book">
   <div class="sheet-card">
-    <span class="micro" style="color:var(--accent)">The Guest Book</span>
-    <h3>Leave your name.</h3>
-    <p class="sheet-sub">So Robert can follow up about this home — nothing more.</p>
+    <span class="micro" style="color:var(--accent)" id="shKicker">4524 Skywood Lane</span>
+    <h3 id="shHead">What's the payment?</h3>
+    <p class="sheet-sub" id="shSub">Leave your number and I'll text you the estimate — taxes, HOA, all of it.</p>
     <form class="g-form" id="gateForm" autocomplete="on">
       <label for="gn" style="position:absolute;left:-9999px">Your name</label>
       <input id="gn" name="name" placeholder="Your name" autocomplete="name" required>
       <label for="gp" style="position:absolute;left:-9999px">Mobile number</label>
       <input id="gp" name="phone" type="tel" inputmode="tel" placeholder="Mobile number" autocomplete="tel" required>
-      <button class="g-btn" type="submit">Sign the book</button>
+      <button class="g-btn" type="submit">Text me the estimate</button>
     </form>
     <p id="gerr" style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#b5282e;margin-top:14px;min-height:12px"></p>
     <p class="g-consent">By signing you agree that Robert Michael may contact you about
@@ -325,16 +342,74 @@
 
   // No gate. The tap lands on the brochure itself.
   if(topbar) topbar.classList.add("show");
-  if(seen()==="signed") markSigned();
 
-  function markSigned(){ if(signinBtn){ signinBtn.textContent="Signed in"; signinBtn.classList.add("done"); } }
+  /* ===== THE ASK =====================================================
+     A noun on the button ("Guest book", "Check in") describes the form, and
+     nobody taps a form. Each label below is a question the buyer already has,
+     so the tap is them asking rather than you collecting — and whichever one
+     is live when they tap rides along on the lead, so you know the intent
+     before you dial. Edit these three freely; everything else follows.
+     Only promise what you can actually send back.                        */
+  var ASKS = [
+    { btn:"What's the payment?",
+      head:"What's the payment?",
+      sub:"Leave your number and I'll text you the estimate — taxes, HOA, all of it.",
+      cta:"Text me the estimate", tag:"Asked: payment" },
+    { btn:"See the floor plan",
+      head:"Floor plan, sent.",
+      sub:"Name and number, and the full plan comes straight to your phone.",
+      cta:"Send the floor plan", tag:"Asked: floor plan" },
+    { btn:"Ask about this home",
+      head:"Ask me anything.",
+      sub:"Leave your name and I'll get back to you about this home — nothing more.",
+      cta:"Send it over", tag:"Asked: general" }
+  ];
+  var askIdx = 0, askTimer = null, CYCLES = 6;   // ~2 passes, then it settles
+  var shHead=document.getElementById("shHead"), shSub=document.getElementById("shSub"),
+      shCta=document.querySelector("#gateForm .g-btn");
 
-  // The guest book — opened by choice
-  if(signinBtn) signinBtn.addEventListener("click",function(){ sheet.classList.add("on");
+  function paintAsk(i){
+    askIdx = i % ASKS.length;
+    if(signinBtn && !signinBtn.classList.contains("done")) signinBtn.textContent = ASKS[askIdx].btn;
+  }
+  function cutTo(i){
+    if(!signinBtn || signinBtn.classList.contains("done")) return;
+    if(reduce){ paintAsk(i); return; }
+    signinBtn.classList.add("cut");                 // 90ms inverted flash — a cut, not a fade
+    setTimeout(function(){ paintAsk(i); },45);
+    setTimeout(function(){ signinBtn.classList.remove("cut"); },135);
+  }
+  function startCycle(){
+    var n = 0;
+    askTimer = setInterval(function(){
+      if(++n > CYCLES || !signinBtn || signinBtn.classList.contains("done") ||
+         sheet.classList.contains("on")){ clearInterval(askTimer); askTimer=null; return; }
+      cutTo(askIdx + 1);
+    }, 3400);
+  }
+  function stopCycle(){ if(askTimer){ clearInterval(askTimer); askTimer=null; } }
+
+  if(seen()==="signed") markSigned(); else startCycle();
+
+  function markSigned(){
+    stopCycle();
+    if(signinBtn){ signinBtn.textContent="Thanks — he'll be in touch"; signinBtn.classList.add("done"); }
+  }
+
+  // Opened by choice. The sheet answers whichever question was on the button.
+  if(signinBtn) signinBtn.addEventListener("click",function(){
+    stopCycle();
+    var a = ASKS[askIdx];
+    if(shHead) shHead.textContent = a.head;
+    if(shSub)  shSub.textContent  = a.sub;
+    if(shCta)  shCta.textContent  = a.cta;
+    sheet.classList.add("on"); body.classList.add("locked");
     setTimeout(function(){ try{document.getElementById("gn").focus({preventScroll:true});}catch(e){} },120); });
+  function closeSheet(){ sheet.classList.remove("on"); body.classList.remove("locked"); }
   var sheetClose=document.getElementById("sheetClose");
-  if(sheetClose) sheetClose.addEventListener("click",function(){ sheet.classList.remove("on"); });
-  sheet.addEventListener("click",function(e){ if(e.target===sheet) sheet.classList.remove("on"); });
+  if(sheetClose) sheetClose.addEventListener("click",closeSheet);
+  sheet.addEventListener("click",function(e){ if(e.target===sheet) closeSheet(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&sheet.classList.contains("on")) closeSheet(); });
 
   form.addEventListener("submit",function(e){
     e.preventDefault();
@@ -347,10 +422,10 @@
     var phone="("+digits.slice(0,3)+") "+digits.slice(3,6)+"-"+digits.slice(6);
     guest={name:name,phone:phone};
     try{ window._lead={name:name,phone:phone,listing:LISTING}; }catch(_){}
-    sendLead(name,phone,"Guest book sign-in");
+    sendLead(name,phone,ASKS[askIdx].tag);   // you know what they wanted before you call
     remember("signed");
     markSigned();
-    sheet.classList.remove("on");
+    closeSheet();
   });
 
   // Close 2 — the end (warm): same visitor, asking for a private showing
