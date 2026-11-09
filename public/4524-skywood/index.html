@@ -102,6 +102,9 @@
   .close h2{font-size:clamp(34px,6vw,64px); font-weight:200; margin:20px 0 0; line-height:1.02}
   .close .who{font-size:26px; color:var(--ink); margin-top:36px; font-weight:300}
   .close .line{font-size:16px; color:var(--body); margin-top:4px; user-select:all}
+  .close .say b{font-weight:400; color:var(--ink)}
+  .close .fine{font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--muted); margin:16px 0 0; line-height:1.7}
+  .close .who{margin-top:56px}
   .cta{display:inline-flex; align-items:center; justify-content:center; margin-top:28px; padding:16px 40px; border:1px solid var(--ink); color:var(--ink); text-decoration:none; font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.26em; text-transform:uppercase; transition:.2s; cursor:pointer}
   .cta:hover{background:var(--ink); color:var(--quartz)}
   .foot{padding-block:40px; text-align:center}
@@ -334,19 +337,20 @@
 
   <section class="close pad">
     <div class="narrow">
-      <span class="label">After the Open House</span>
-      <h2>See it again — on your own time.</h2>
-      <p class="say" style="margin-top:22px">Open houses move fast. Come back for a private walk-through — no crowd, no rush, every question answered.</p>
+      <span class="label">Before you leave</span>
+      <h2>Know if it's yours before you're back in the car.</h2>
+      <p class="say" style="margin-top:22px">Text <b>Skywood</b> and within the hour you get what this home costs a month at today's rates, three homes like it near this price, and this page to keep — plus a text the day the price moves.</p>
+      <a class="cta" id="endCta" href="sms:+16617139667?&body=Skywood%20%E2%80%94%20send%20me%20the%20numbers">Text “Skywood”</a>
+      <p class="fine">One text. No app, no form, no calls unless you ask. Reply STOP anytime.</p>
       <div class="who">Robert Michael</div>
       <div class="line">661 · 713 · 9667</div>
       <div class="line">team@robertmichaelrealty.com</div>
-      <a class="cta" id="endCta" href="sms:+16617139667?&body=Hi%20Robert%2C%20I%27d%20like%20to%20schedule%20a%20private%20showing%20of%204524%20Skywood%20Ln.">Schedule a private tour</a>
     </div>
   </section>
 
   <footer class="foot pad">
     <p>Listing courtesy of Conner Parks, The Homestead Group. Source: Realtracs, as of October 2026. Information deemed reliable but not guaranteed; buyers should verify all details independently.</p>
-    <p class="sig">Realtor® · Affiliate Broker · TN Lic. #386299 &nbsp;·&nbsp; Powered by <b>✦ Sable Systems</b></p>
+    <p class="sig">Robert Michael · Realtor® · Affiliate Broker, The Homestead Group · TN Lic. #386299 &nbsp;·&nbsp; Powered by <b>✦ Sable Systems</b></p>
   </footer>
 </main>
 
@@ -553,7 +557,7 @@
   if(endCta){
     endCta.addEventListener("click",function(){
       var g=guest||{};
-      sendLead(g.name||"",g.phone||"","Requested private tour");
+      sendLead(g.name||"",g.phone||"","Texted Skywood — wants the numbers");
       // href still fires — opens their Messages to Robert
     });
   }
