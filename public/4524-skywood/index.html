@@ -419,9 +419,19 @@
   var LABW = [];
   function measure(){
     var sz=document.getElementById("tbSize"); if(!sz||!roll) return;
-    LABW = ASKS.map(function(o){ sz.textContent=o.btn; return Math.ceil(sz.offsetWidth)+1; });
+    LABW = ASKS.map(function(o){ sz.textContent=o.btn; return Math.ceil(sz.offsetWidth)+4; });
     sz.textContent="";
   }
+  /* The first measure runs on the fallback font. Inter lands a beat later and
+     is wider, so the roll was clipping "qualify" → "qualif" on iPhone. Measure
+     again once the webfont is actually in, and resize whatever label is showing. */
+  function remeasure(){
+    measure();
+    if(roll && LABW[askIdx]) roll.style.width = LABW[askIdx]+"px";
+    autofit();
+  }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(remeasure); }
+  addEventListener("load", remeasure);
   /* The mold can't police what an agent types into listing.js, so it yields:
      if the widest label leaves the stats less than 14px of air, the square
      footage steps aside. Price and beds/baths always survive. */
