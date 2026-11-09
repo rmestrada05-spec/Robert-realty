@@ -62,10 +62,15 @@ window.LISTING_CFG = {
      starts reading as a banner, and people don't press banners — so the
      first thing it says is what it is.                                    */
   offers: [
-    { id:"text",
-      label:"Tap to text",
+    { id:"moves",
+      label:"Text me if it moves",
       sms:true,
-      body:"Hi {first}, I'm at {address} — " },
+      body:"{address} — text me the day it moves" },
+
+    { id:"payment",
+      label:"What's it a month?",
+      sms:true,
+      body:"{address} — what's it a month at today's rates?" },
 
     /* Every offer opens Messages with the ask already written. No sheet, no
        fields — the buyer's own text is the sign-in. One thumb, every time.   */
