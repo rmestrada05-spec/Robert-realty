@@ -517,6 +517,7 @@
     var a = ASKS[askIdx];
     if(a.sms){
       var num = (CFG.phoneRaw||"").replace(/[^\d+]/g,"");
+      try{ sendLead("", "", a.tag+" (opened Messages)"); }catch(_){}   // intent, before the number arrives by text
       if(num) location.href = "sms:"+num+"?&body="+encodeURIComponent(a.body||"");
       return;
     }

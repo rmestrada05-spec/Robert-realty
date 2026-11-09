@@ -67,18 +67,17 @@ window.LISTING_CFG = {
       sms:true,
       body:"Hi {first}, I'm at {address} — " },
 
+    /* Every offer opens Messages with the ask already written. No sheet, no
+       fields — the buyer's own text is the sign-in. One thumb, every time.   */
     { id:"like",
       label:"Show me three like it",
-      head:"Three like it.",
-      sub:"Three homes near this one, around this price, sent once. Not a drip campaign.",
-      cta:"Send the three" },
+      sms:true,
+      body:"{address} — send me three like it" },
 
     { id:"qualify",
       label:"Text me if I qualify",
-      head:"Find out what you qualify for.",
-      sub:"I'll put you in front of the lender I work with. They'll text you a real " +
-          "number instead of a guess — usually same day.",
-      cta:"Connect me" }
+      sms:true,
+      body:"{address} — what would I qualify for?" }
   ],
 
   // One line of flex, shown above the form. Every other card in the
