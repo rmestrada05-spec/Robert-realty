@@ -67,10 +67,10 @@ window.LISTING_CFG = {
       sms:true,
       body:"Hi {first}, I'm at {address} — " },
 
-    { id:"moves",
-      label:"Text me if it moves",
+    { id:"like",
+      label:"Show me three like it",
       sms:true,
-      body:"{address} — text me the day it moves" },
+      body:"{address} — send me three like it" },
 
     /* Every offer opens Messages with the ask already written. No sheet, no
        fields — the buyer's own text is the sign-in. One thumb, every time.   */
