@@ -72,18 +72,8 @@ window.LISTING_CFG = {
       sms:true,
       body:"{address} — text me the day it moves" },
 
-    { id:"payment",
-      label:"What's it a month?",
-      sms:true,
-      body:"{address} — what's it a month at today's rates?" },
-
     /* Every offer opens Messages with the ask already written. No sheet, no
        fields — the buyer's own text is the sign-in. One thumb, every time.   */
-    { id:"like",
-      label:"Show me three like it",
-      sms:true,
-      body:"{address} — send me three like it" },
-
     { id:"qualify",
       label:"Text me if I qualify",
       sms:true,
