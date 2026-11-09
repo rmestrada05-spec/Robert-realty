@@ -62,6 +62,11 @@ window.LISTING_CFG = {
      starts reading as a banner, and people don't press banners — so the
      first thing it says is what it is.                                    */
   offers: [
+    { id:"text",
+      label:"Tap to text",
+      sms:true,
+      body:"Hi {first}, I'm at {address} — " },
+
     { id:"moves",
       label:"Text me if it moves",
       sms:true,
