@@ -38,8 +38,18 @@
       "permanent": false
     },
     {
-      "source": "/",
+      "source": "/open-house",
       "destination": "/4524-skywood/",
+      "permanent": false
+    },
+    {
+      "source": "/openhouse",
+      "destination": "/4524-skywood/",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "destination": "/contracts/",
       "permanent": false
     }
   ],
