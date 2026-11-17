@@ -17,9 +17,9 @@ window.LISTING_CFG = {
   // Falls back to window.SABLE when the card is served from
   // sable.estate, so a subscriber sets this once, not per listing.
   agent:     "Robert Michael",
-  phone:     "661 · 713 · 9667",
-  phoneRaw:  "+16617139667",          // tel:/sms: form, digits only
-  email:     "team@robertmichaelrealty.com",
+  phone:     "(629) 247-3320",
+  phoneRaw:  "+16292473320",          // tel:/sms: form, digits only
+  email:     "Team@robertmichaelrealty.com",
   brokerage: "The Homestead Group",
   license:   "",                      // REQUIRED in CA/FL/etc. Printed in the footer.
   licenseSt: "TN",

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Current Contracts · Robert Michael</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,200;0,14..32,300;0,14..32,400;0,14..32,500;1,14..32,300&family=DM+Mono:wght@300;400&display=swap">
+<style>
+  /* A two-act listing: Act I a dark Tron×Yeezy gate that captures the visitor and opens;
+     Act II a white-quartz editorial residence — full-bleed photography, vast air, no chrome. */
+  :root{
+    --quartz:#f4f3ef; --quartz-dim:#e9e7e1; --ink:#14130f; --body:#48453d; --muted:#8c887e;
+    --hair:#d8d5cc; --accent:#9a7b3f;
+    /* Act I now opens in white — matching the physical card */
+    --gate:#ffffff; --gate-2:#f6f5f1; --ongate:#14130f; --ongate-dim:#9a968c; --seam:#cbc7bd;
+    --serif:"Inter","Helvetica Neue",Arial,sans-serif;
+    --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+    --mono:"DM Mono",ui-monospace,Menlo,monospace;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--quartz); color:var(--body);
+    font-family:var(--sans); font-weight:300; font-size:16px; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.locked{overflow:hidden; height:100vh}
+  h1,h2,h3{font-family:var(--sans); font-weight:200; color:var(--ink); margin:0; text-wrap:balance; letter-spacing:-.018em}
+  p{margin:0}
+  img{display:block; max-width:100%}
+  .micro{font-family:var(--mono); font-weight:300; font-size:10.5px; letter-spacing:.42em; text-transform:uppercase}
+  .label{font-family:var(--sans); font-weight:400; font-size:10.5px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted)}
+
+  /* ============ ACT II — RESIDENCE (beneath) ============ */
+  .pad{padding-left:max(22px,env(safe-area-inset-left,0px)); padding-right:max(22px,env(safe-area-inset-right,0px))}
+  .col{max-width:1080px; margin:0 auto}
+  .narrow{max-width:720px; margin:0 auto}
+
+  .r-hero{position:relative; height:92vh; min-height:520px; overflow:hidden}
+  .r-hero img{width:100%; height:100%; object-fit:cover; filter:saturate(.96) contrast(1.02)}
+  .r-hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,10,11,.34) 0%,rgba(10,10,11,0) 30%,rgba(10,10,11,.72) 100%)}
+  .r-hero .plate{position:absolute; left:0; right:0; bottom:0; z-index:2; color:#f7f6f2; padding-block:0 max(36px,env(safe-area-inset-bottom,0px)); text-shadow:0 1px 24px rgba(10,10,11,.45)}
+  .r-hero .label{color:#ffffff; opacity:.92}
+  .r-hero h1{color:#fff; font-size:clamp(44px,10vw,112px); line-height:.94; font-weight:200; letter-spacing:-.035em; margin:10px 0 0}
+  .r-hero h1 em{font-style:normal}
+  .r-hero .sub{font-family:var(--serif); font-size:clamp(17px,2.4vw,22px); color:rgba(247,246,242,.9); margin-top:12px; max-width:34ch}
+
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--hair); max-width:1080px; margin:0 auto}
+  .stats div{padding:30px 14px; text-align:center; border-left:1px solid var(--hair)}
+  .stats div:first-child{border-left:0}
+  .stats b{display:block; font-family:var(--sans); font-size:clamp(26px,4vw,40px); color:var(--ink); font-weight:200; letter-spacing:-.025em; line-height:1}
+  .stats .label{margin-top:12px; font-size:9.5px}
+
+  .intro{padding-block:clamp(70px,11vw,130px)}
+  .intro .label{display:block; text-align:center; margin-bottom:26px; color:var(--accent)}
+  .intro p{font-family:var(--serif); font-size:clamp(23px,3.4vw,33px); line-height:1.4; color:var(--ink); text-align:center; font-weight:300}
+
+  .shot{margin-block:clamp(14px,3vw,30px)}
+  .shot.full img{width:100%; height:auto}
+  .shot .cap{display:flex; justify-content:space-between; align-items:baseline; gap:16px; max-width:1080px; margin:16px auto 0; flex-wrap:wrap}
+  .shot .cap h3{font-size:clamp(22px,3vw,30px); font-weight:400}
+  .shot .cap .rt{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase}
+  .shot .cap p{font-family:var(--serif); font-size:18px; color:var(--body); max-width:46ch}
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,2vw,20px); max-width:1080px; margin-inline:auto}
+  .duo img{width:100%; aspect-ratio:3/4; object-fit:cover}
+
+  .numbers{padding-block:clamp(70px,11vw,130px); border-top:1px solid var(--hair); margin-top:clamp(40px,7vw,90px)}
+  .numbers .big{font-family:var(--sans); font-size:clamp(66px,13vw,150px); line-height:.9; color:var(--ink); font-weight:200; letter-spacing:-.04em; text-align:center}
+  .numbers .big small{display:block; font-family:var(--sans); font-weight:300; font-size:13px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); margin-top:20px}
+  .numbers .say{font-family:var(--serif); font-size:clamp(19px,2.6vw,24px); line-height:1.5; color:var(--body); text-align:center; margin:40px auto 0; max-width:52ch}
+  .comps{margin:54px auto 0; max-width:620px}
+  .comp{display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding:16px 0; border-bottom:1px solid var(--hair)}
+  .comp:first-child{border-top:1px solid var(--hair)}
+  .comp .nm{font-family:var(--serif); font-size:19px; color:var(--ink)}
+  .comp .nm small{display:block; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.08em; margin-top:3px}
+  .comp .v{font-family:var(--mono); font-size:14px; color:var(--body); white-space:nowrap}
+  .comp.me .nm,.comp.me .v{color:var(--accent)}
+  .comp.me .nm{font-style:italic}
+
+  .close{padding-block:clamp(80px,12vw,150px); text-align:center; background:var(--quartz-dim); border-top:1px solid var(--hair)}
+  .close .label{color:var(--accent)}
+  .close h2{font-size:clamp(34px,6vw,64px); font-weight:300; margin:20px 0 0; line-height:1.02}
+  .close h2 em{font-style:italic}
+  .close .who{font-family:var(--serif); font-size:26px; color:var(--ink); margin-top:36px}
+  .close .line{font-size:16px; color:var(--body); margin-top:4px; user-select:all}
+  .cta{display:inline-flex; align-items:center; justify-content:center; margin-top:28px; padding:16px 40px; border:1px solid var(--ink); color:var(--ink); text-decoration:none; font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.26em; text-transform:uppercase; transition:.2s}
+  .cta:hover{background:var(--ink); color:var(--quartz)}
+  .foot{padding-block:40px; text-align:center}
+  .foot p{font-size:11px; color:var(--muted); line-height:1.7; max-width:62ch; margin:0 auto}
+  .foot .sig{font-family:var(--mono); letter-spacing:.3em; text-transform:uppercase; margin-top:18px; font-size:10px; color:var(--muted)}
+  .foot .sig b{color:var(--accent); font-weight:400}
+  .foot .lic{font-family:var(--mono); letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; color:var(--body); margin-top:18px}
+
+  /* ---- Buyer sections: current contracts + buy box (same tokens, no new palette) ---- */
+  .deals,.box{padding-block:clamp(70px,11vw,130px); border-top:1px solid var(--hair)}
+  .sec-head .label{display:block; color:var(--accent); margin-bottom:22px}
+  .sec-head h2{font-size:clamp(32px,5.4vw,58px); font-weight:300; line-height:1.04}
+  .sec-head p{font-size:clamp(17px,2.2vw,20px); line-height:1.55; color:var(--body); margin-top:22px; max-width:62ch}
+  .sec-head p.fine{font-size:15px; color:var(--muted); margin-top:14px}
+  .deal-grid{display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--hair); border-left:1px solid var(--hair); margin-top:54px}
+  .deal{padding:34px 28px 30px; border-right:1px solid var(--hair); border-bottom:1px solid var(--hair); display:flex; flex-direction:column; background:var(--quartz)}
+  .deal h3{font-size:clamp(24px,3vw,32px); font-weight:300; margin-top:10px; line-height:1.1}
+  .deal .px{font-size:clamp(36px,5vw,54px); font-weight:200; color:var(--ink); letter-spacing:-.03em; line-height:1; margin-top:28px}
+  .deal .px small{font-family:var(--mono); font-weight:300; font-size:10.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); margin-left:10px}
+  .deal .dl{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:14px}
+  .deal .ln{font-size:17px; line-height:1.55; color:var(--body); margin-top:22px}
+  .deal .plain{margin-top:16px; padding:14px 16px; border:1px solid var(--accent); font-size:15.5px; line-height:1.5; color:var(--ink)}
+  .deal .plain b{display:block; font-family:var(--mono); font-weight:400; font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .deal .ask{margin-top:auto; padding-top:26px; font-size:10.5px; font-weight:400; letter-spacing:.3em; text-transform:uppercase; color:var(--ink); text-decoration:none}
+  .deal .ask span{border-bottom:1px solid var(--ink); padding-bottom:3px}
+  .deals .reach{font-size:17px; color:var(--body); margin-top:34px}
+  .deals .reach b{color:var(--ink); font-weight:400; user-select:all}
+  /* text-only cards: address, price, close date carry the card */
+  .deal h3{font-size:clamp(27px,3.3vw,38px); font-weight:300; letter-spacing:-.025em}
+  .deal .px{font-size:clamp(40px,5.6vw,62px); margin-top:24px}
+  .deal .dl{color:var(--ink); font-size:12.5px; letter-spacing:.18em; margin-top:22px; padding-top:16px; border-top:1px solid var(--hair)}
+  .deal .ln{margin-top:18px}
+  .deals .reach + .reach{margin-top:10px}
+  .deal:only-child{grid-column:1/-1}
+  .deals .reach a,.box .sec-head a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:2px}
+
+  .bb{margin-top:48px; display:grid; grid-template-columns:1fr 1fr; gap:30px 34px}
+  .bb .f{display:flex; flex-direction:column}
+  .bb .f.wide{grid-column:1/-1}
+  .bb label.q,.bb legend{font-family:var(--sans); font-weight:400; font-size:10.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); padding:0}
+  .bb input[type=text],.bb input[type=tel],.bb select{width:100%; background:transparent; border:0; border-bottom:1px solid var(--hair); border-radius:0; color:var(--ink); font-family:var(--sans); font-weight:300; font-size:17px; padding:12px 2px; -webkit-appearance:none; appearance:none}
+  .bb input:focus,.bb select:focus{outline:none; border-bottom-color:var(--ink)}
+  .bb input::placeholder{color:var(--ongate-dim)}
+  .bb fieldset{border:0; margin:0; padding:0; min-width:0}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+  .chips label{cursor:pointer}
+  .chips input{position:absolute; opacity:0; pointer-events:none}
+  .chips span{display:inline-block; padding:10px 16px; border:1px solid var(--hair); font-size:14px; color:var(--body); transition:.15s}
+  .chips input:checked + span{background:var(--ink); border-color:var(--ink); color:var(--quartz)}
+  .chips input:focus-visible + span{border-color:var(--ink)}
+  .bb .send{grid-column:1/-1; display:flex; align-items:center; gap:22px; flex-wrap:wrap}
+  .bb button,.bb-out button,.bb-out a.btn{background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer; font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.28em; text-transform:uppercase; padding:16px 34px; text-decoration:none; display:inline-block; transition:.2s}
+  .bb button:hover,.bb-out button:hover,.bb-out a.btn:hover{background:var(--ink); color:var(--quartz)}
+  .bb .send small{font-size:14px; color:var(--muted)}
+  .bb-out{margin-top:40px; border:1px solid var(--hair); padding:28px; background:var(--quartz-dim)}
+  .bb-out p{font-size:16px; color:var(--body); max-width:60ch}
+  .bb-out p b{color:var(--ink); font-weight:400; user-select:all}
+  .bb-out pre{font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--ink); white-space:pre-wrap; margin:20px 0 22px; padding:18px; background:var(--quartz); border:1px solid var(--hair)}
+  .bb-out .row{display:flex; gap:12px; flex-wrap:wrap}
+  .g-skip{margin-top:26px; background:none; border:0; padding:6px; cursor:pointer; font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink)}
+  .g-skip span{border-bottom:1px solid var(--seam); padding-bottom:3px}
+  @media (max-width:720px){
+    .deal-grid{grid-template-columns:1fr}
+    .deal{padding:30px 20px 26px}
+    .bb{grid-template-columns:1fr}
+  }
+
+  @media (max-width:720px){
+    .stats{grid-template-columns:1fr 1fr}
+    .stats div:nth-child(3){border-left:0}
+    .stats div:nth-child(n+3){border-top:1px solid var(--hair)}
+    .duo{grid-template-columns:1fr}
+    .duo img{aspect-ratio:4/3}
+  }
+
+  /* ============ ACT I — THE DOORS (gate) — white, to match the card ============ */
+  .gate{position:fixed; inset:0; z-index:50; overflow:hidden}
+  .door{position:absolute; top:0; bottom:0; width:50.4%; background:var(--gate);
+    transition:transform 1.5s cubic-bezier(.76,0,.24,1)}
+  .door.l{left:0; background:linear-gradient(90deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset -1px 0 0 rgba(20,19,15,.04)}
+  .door.r{right:0; background:linear-gradient(270deg,var(--gate) 72%,var(--gate-2)); box-shadow:inset 1px 0 0 rgba(20,19,15,.04)}
+  .seam{position:absolute; top:0; bottom:0; left:50%; width:1px; transform:translateX(-50%); z-index:3;
+    background:linear-gradient(180deg,transparent,var(--seam),transparent); opacity:.9;
+    box-shadow:0 0 18px 2px rgba(20,19,15,.05); transition:opacity .6s}
+  .gate-inner{position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; color:var(--ongate);
+    padding:max(26px,env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-left,0px)) max(26px,env(safe-area-inset-bottom,0px));
+    transition:opacity .7s ease, transform .7s ease}
+  .gate-inner .micro{color:var(--ongate-dim)}
+  .g-addr{font-family:var(--sans); font-weight:200; font-size:clamp(34px,8.5vw,80px); line-height:.98; color:var(--ink); margin:22px 0 0; letter-spacing:-.035em}
+  .g-addr em{font-style:normal}
+  .g-sub{font-family:var(--sans); font-weight:300; font-size:clamp(15px,2.2vw,18px); color:var(--muted); margin:16px 0 0; max-width:32ch}
+  .g-rule{width:34px; height:1px; background:var(--ongate-dim); opacity:.6; margin:40px 0 30px}
+  .g-form{display:flex; flex-direction:column; gap:12px; width:min(340px,86vw)}
+  .g-form input{width:100%; background:transparent; border:0; border-bottom:1px solid var(--hair);
+    color:var(--ink); font-family:var(--sans); font-weight:300; font-size:15px; letter-spacing:.01em; padding:13px 2px; text-align:center}
+  .g-form input::placeholder{color:var(--ongate-dim); letter-spacing:.14em; font-size:12px; text-transform:uppercase}
+  .g-form input:focus{outline:none; border-bottom-color:var(--ink)}
+  .g-btn{margin-top:20px; background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer;
+    font-family:var(--sans); font-weight:400; font-size:11px; letter-spacing:.32em; text-transform:uppercase; padding:16px; transition:.25s}
+  .g-btn:hover{background:var(--ink); color:#fff; border-color:var(--ink)}
+  .g-note{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--ongate-dim); text-transform:uppercase; margin-top:18px}
+
+  .gate.open .door.l{transform:translateX(-101%)}
+  .gate.open .door.r{transform:translateX(101%)}
+  .gate.open .seam{opacity:0}
+  .gate.open .gate-inner{opacity:0; transform:translateY(-10px); pointer-events:none}
+
+  @media (prefers-reduced-motion:reduce){
+    .door,.seam,.gate-inner{transition:none}
+  }
+
+  /* ---- contracts page: top bar with the rolling text offer ---- */
+  .bar{position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:14px;
+    padding-block:12px; background:rgba(244,243,239,.88); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border-bottom:1px solid var(--hair)}
+  .bar .micro{color:var(--ink); letter-spacing:.3em; white-space:nowrap}
+  .bar .micro em{font-style:normal; color:var(--muted)}
+  .roll{display:inline-flex; align-items:center; justify-content:space-between; gap:12px; box-sizing:border-box; height:40px; padding:0 16px; overflow:hidden; white-space:nowrap;
+    border:1px solid var(--ink); color:var(--ink); text-decoration:none; font-family:var(--sans); font-weight:400; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    transition:width .55s cubic-bezier(.76,0,.24,1), background .2s, color .2s}
+  .roll:hover{background:var(--ink); color:var(--quartz)}
+  .roll-in{display:inline-block; transition:transform .3s ease, opacity .3s ease}
+  .roll i{font-style:normal; color:var(--accent)}
+  .roll:hover i{color:var(--quartz)}
+  .roll.out .roll-in{transform:translateY(-120%); opacity:0}
+  .roll.pre .roll-in{transform:translateY(120%); opacity:0; transition:none}
+  .roll.in .roll-in{animation:flick .46s linear}
+  @keyframes flick{0%{opacity:0}30%{opacity:.85}45%{opacity:.25}62%{opacity:1}74%{opacity:.6}100%{opacity:1}}
+  .deals{border-top:0; padding-top:clamp(120px,16vw,180px)}
+  .sec-head h1{font-size:clamp(36px,6.4vw,76px); font-weight:200; line-height:1; letter-spacing:-.035em}
+  @media (max-width:720px){ .bar .micro em{display:none} .roll{font-size:9.5px; letter-spacing:.16em; padding:0 12px} }
+  @media (prefers-reduced-motion:reduce){ .roll,.roll-in{transition:none} .roll.in .roll-in{animation:none} }
+</style></head><body>
+
+<header class="bar pad">
+  <span class="micro">Robert Michael <em>· Current Contracts</em></span>
+  <a class="roll" id="roll" href="sms:+16292473320?&body=Robert%2C%20put%20me%20on%20your%20list.%20Text%20me%20your%20next%20contract%20first."><span class="roll-in" id="rollIn">Text me the next one first</span><i>&rsaquo;</i></a>
+</header>
+
+<main>
+  <section class="deals pad" id="contracts">
+    <div class="col">
+      <div class="sec-head">
+        <span class="label">Current Contracts · Cash Buyers</span>
+        <h1>What I have under contract right now.</h1>
+        <p>These are assignment opportunities for cash buyers. I hold the purchase contract on each one, and what I'm selling is my position in that contract. Every one is sold as-is. You do your own due diligence inside the inspection window.</p>
+        <p class="fine">Straight about my role: I don't own these properties, I have them under contract. I'm a licensed Tennessee affiliate broker, and on these I'm buying and assigning for myself, not acting as your agent. All-in is the price to you with my assignment fee already in it.</p>
+      </div>
+
+      <div class="deal-grid">
+        <article class="deal">
+          <span class="label">Forest Hills · Lot</span>
+          <h3>1433 Beddington Park</h3>
+          <div class="px">$395,000<small>All-in</small></div>
+          <div class="dl">Contract closes by Nov 28</div>
+          <p class="ln">Buildable 1.25-acre lot. Two full sets of house plans and the engineering come with it, and the permit path is already worked.</p>
+          <a class="ask" href="sms:+16292473320?&body=1433%20Beddington%20Park.%20Send%20me%20the%20packet."><span>Text me this packet</span></a>
+        </article>
+
+        <article class="deal">
+          <span class="label">Nashville · Wholetail</span>
+          <h3>5101 Regent Dr</h3>
+          <div class="px">$440,000<small>All-in</small></div>
+          <div class="dl">Contract closes by Nov 30</div>
+          <p class="ln">Priced as a light cosmetic wholetail. Verify the condition yourself in the inspection window.</p>
+          <a class="ask" href="sms:+16292473320?&body=5101%20Regent%20Dr.%20Send%20me%20the%20packet."><span>Text me this packet</span></a>
+        </article>
+
+        <article class="deal">
+          <span class="label">Nashville · House on 0.58 acres</span>
+          <h3>1021 Mitchell Rd</h3>
+          <div class="px">$605,000<small>All-in</small></div>
+          <div class="dl">Contract closes by Nov 30</div>
+          <p class="ln">2,209 square feet sitting on 0.58 acres.</p>
+          <a class="ask" href="sms:+16292473320?&body=1021%20Mitchell%20Rd.%20Send%20me%20the%20packet."><span>Text me this packet</span></a>
+        </article>
+
+        <article class="deal">
+          <span class="label">Nashville · Renovated</span>
+          <h3>5919 Old Harding Pike</h3>
+          <div class="px">$555,000<small>All-in</small></div>
+          <div class="dl">Contract closes by Nov 24</div>
+          <p class="ln">Renovated 4 bed, 2 bath, 1,756 square feet.</p>
+          <p class="plain"><b>Know this first</b>This house is in a flood zone and it sits by a railroad. I'm telling you now so it isn't a surprise later. Price both in before you call me.</p>
+          <a class="ask" href="sms:+16292473320?&body=5919%20Old%20Harding%20Pike.%20Send%20me%20the%20packet."><span>Text me this packet</span></a>
+        </article>
+      </div>
+
+      <p class="reach">Want one of these? Call or text me at <b>(629) 247-3320</b> or email <b>Team@robertmichaelrealty.com</b>. Photos and the full packet are yours when you ask.</p>
+      <p class="reach">None of these fit? <a href="#buy-box">Tell me what you buy</a> and I'll send you what fits.</p>
+    </div>
+  </section>
+
+  <section class="box pad" id="buy-box">
+    <div class="col">
+      <div class="sec-head">
+        <span class="label">Buy Box</span>
+        <h2>Tell me what you buy</h2>
+        <p>Takes about a minute. You hear from me when a contract fits your box.</p>
+        
+      </div>
+
+      <form class="bb" id="bbForm" autocomplete="on">
+        <div class="f"><label class="q" for="bbName">Your name</label>
+          <input type="text" id="bbName" name="name" autocomplete="name" required></div>
+        <div class="f"><label class="q" for="bbReach">Best phone or email</label>
+          <input type="text" id="bbReach" name="reach" required></div>
+
+        <div class="f wide"><label class="q" for="bbAreas">Areas or zips</label>
+          <input type="text" id="bbAreas" name="areas" placeholder="37206, Forest Hills, Lebanon" required></div>
+
+        <fieldset class="f wide"><legend>Property types</legend>
+          <div class="chips" id="bbTypes">
+            <label><input type="checkbox" value="Land / lots"><span>Land / lots</span></label>
+            <label><input type="checkbox" value="Teardown / new build"><span>Teardown / new build</span></label>
+            <label><input type="checkbox" value="Fix and flip"><span>Fix and flip</span></label>
+            <label><input type="checkbox" value="Wholetail"><span>Wholetail</span></label>
+            <label><input type="checkbox" value="Rental"><span>Rental</span></label>
+            <label><input type="checkbox" value="Multifamily"><span>Multifamily</span></label>
+          </div></fieldset>
+
+        <div class="f"><label class="q" for="bbPrice">Price range</label>
+          <input type="text" id="bbPrice" name="price" placeholder="$300K to $650K"></div>
+        <div class="f"><label class="q" for="bbCond">Condition you'll take</label>
+          <select id="bbCond" name="condition">
+            <option value="">Pick one</option>
+            <option>Turnkey only</option>
+            <option>Light cosmetic</option>
+            <option>Full rehab</option>
+            <option>Teardown</option>
+            <option>Anything, if the number works</option>
+          </select></div>
+
+        <div class="f"><label class="q" for="bbSpeed">How fast you close</label>
+          <select id="bbSpeed" name="speed">
+            <option value="">Pick one</option>
+            <option>7 days or less</option>
+            <option>Within 14 days</option>
+            <option>Within 21 days</option>
+            <option>30 days or more</option>
+          </select></div>
+        <div class="f"><label class="q" for="bbCount">How many you're buying right now</label>
+          <input type="text" id="bbCount" name="count" inputmode="numeric" placeholder="1"></div>
+
+        <div class="send"><button type="submit">Send my box</button>
+          </div>
+      </form>
+
+      <div class="bb-out" id="bbOut" hidden>
+        <p>Your box is on its way to me. Want to be sure I have it? Text it to me too, it's already written.</p>
+        <div class="row" style="margin-top:22px"><a class="btn" id="bbText" href="sms:+16292473320">Text it to me</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close pad" id="contact">
+    <div class="narrow">
+      <span class="label">Direct</span>
+      <h2>Text is the fastest way to reach me.</h2>
+      <div class="who">Robert Michael</div>
+      <div class="line">(629) 247-3320</div>
+      <div class="line">Team@robertmichaelrealty.com</div>
+      <a class="cta" href="sms:+16292473320?&body=Robert%2C%20I%20saw%20your%20contracts.%20">Text me</a>
+    </div>
+  </section>
+
+  <footer class="foot pad">
+    <p>Details come from the contracts and public records and can change. Verify everything yourself before you commit.</p>
+    <p class="lic">Robert Michael Estrada · TN Affiliate Broker #386299 · The Homestead Group</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var TO="Team@robertmichaelrealty.com", NUM="+16292473320";
+  // Top bar roll: one tap opens Messages with the ask already written.
+  var offers=[
+    {label:"Text me the next one first", body:"Robert, put me on your list. Text me your next contract first."},
+    {label:"Send me the photo packs", body:"Robert, send me the photo packs on your current contracts."},
+    {label:"Text me what fits my box", body:"Robert, here's what I buy: "}
+  ];
+  var roll=document.getElementById("roll"), inner=document.getElementById("rollIn"), i=0, paused=false;
+  var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function href(o){ return "sms:"+NUM+"?&body="+encodeURIComponent(o.body); }
+  function natural(){ var old=roll.style.width; roll.style.width="auto"; var w=roll.offsetWidth; roll.style.width=old; roll.offsetWidth; return w; }
+  function show(o){
+    if(reduce){ inner.textContent=o.label; roll.href=href(o); return; }
+    roll.style.width=roll.offsetWidth+"px";
+    roll.classList.remove("in"); roll.classList.add("out");
+    setTimeout(function(){
+      roll.classList.remove("out"); roll.classList.add("pre");
+      inner.textContent=o.label; roll.href=href(o);
+      roll.style.width=natural()+"px";
+      inner.offsetWidth;
+      roll.classList.remove("pre"); roll.classList.add("in");
+    },300);
+  }
+  roll.addEventListener("mouseenter",function(){paused=true;});
+  roll.addEventListener("mouseleave",function(){paused=false;});
+  roll.addEventListener("focus",function(){paused=true;});
+  roll.addEventListener("blur",function(){paused=false;});
+  setInterval(function(){ if(paused||document.hidden) return; i=(i+1)%offers.length; show(offers[i]); },4200);
+
+  var h=(location.hash||"").replace("#","");
+  if(h==="buy-box"){ var el=document.getElementById(h); if(el){ try{ el.scrollIntoView(); }catch(_){} } }
+
+  // Buy box: each submission is saved as a row in the leads Google Sheet
+  // (same Apps Script the open house page uses; GET so there's no CORS).
+  var LEADS_URL="https://script.google.com/macros/s/AKfycbx0ydpC9WHAL9So3pVHta0gjcH_CL-eu9yeCD7OAvaGOcl1kFBboBVytoGqzKZW8pvuZQ/exec";
+  var form=document.getElementById("bbForm"), out=document.getElementById("bbOut");
+  function v(id){ return document.getElementById(id).value.trim(); }
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    var types=[].slice.call(document.querySelectorAll("#bbTypes input:checked")).map(function(i){return i.value;}).join(", ");
+    try{
+      var q=new URLSearchParams({name:v("bbName"), location:"Buy box: "+v("bbAreas"), homeStatus:v("bbCond"),
+        income:v("bbPrice"), timeline:v("bbSpeed"), beds:v("bbCount"), homeStyle:types, tnLocation:v("bbAreas"),
+        contactType:"buy box", contact:v("bbReach")});
+      new Image().src=LEADS_URL+"?"+q.toString();
+    }catch(_){}
+    var text="Buy box from "+v("bbName")+". Areas: "+v("bbAreas")+". Types: "+(types||"any")+". Price: "+(v("bbPrice")||"open")+
+      ". Condition: "+(v("bbCond")||"open")+". Close: "+(v("bbSpeed")||"open")+". Buying now: "+(v("bbCount")||"1")+".";
+    document.getElementById("bbText").href="sms:"+NUM+"?&body="+encodeURIComponent(text);
+    form.querySelector("button[type=submit]").textContent="Sent";
+    out.hidden=false;
+    try{ out.scrollIntoView({block:"center"}); }catch(_){ }
+  });
+})();
+</script>
+</body></html>

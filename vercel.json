@@ -2,33 +2,83 @@
   "redirects": [
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "sable.estate" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "sable.estate"
+        }
+      ],
       "destination": "/sable/",
       "permanent": false
     },
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "www.sable.estate" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sable.estate"
+        }
+      ],
       "destination": "/sable/",
       "permanent": false
     },
-    { "source": "/MireyaEstrada", "destination": "/mireyaestrada/", "permanent": false },
-    { "source": "/MireyaEstrada/(.*)", "destination": "/mireyaestrada/$1", "permanent": false },
-    { "source": "/", "destination": "/4524-skywood/", "permanent": false }
+    {
+      "source": "/MireyaEstrada",
+      "destination": "/mireyaestrada/",
+      "permanent": false
+    },
+    {
+      "source": "/MireyaEstrada/(.*)",
+      "destination": "/mireyaestrada/$1",
+      "permanent": false
+    },
+    {
+      "source": "/contracts",
+      "destination": "/contracts/",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "destination": "/4524-skywood/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/leads", "destination": "/index.html" }
+    {
+      "source": "/leads",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/(mireyaestrada|_template)/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     },
     {
       "source": "/crm/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex" },
-        { "key": "X-Frame-Options", "value": "DENY" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    },
+    {
+      "source": "/contracts/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
       ]
     }
   ]
