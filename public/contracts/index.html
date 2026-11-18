@@ -217,6 +217,16 @@
   .sec-head h1{font-size:clamp(36px,6.4vw,76px); font-weight:200; line-height:1; letter-spacing:-.035em}
   @media (max-width:720px){ .bar .micro em{display:none} .roll{font-size:9.5px; letter-spacing:.16em; padding:0 12px} }
   @media (prefers-reduced-motion:reduce){ .roll,.roll-in{transition:none} .roll.in .roll-in{animation:none} }
+  .faq{padding-block:clamp(70px,11vw,130px); border-top:1px solid var(--hair)}
+  .faq .list{margin-top:44px; border-top:1px solid var(--hair); max-width:860px}
+  .faq details{border-bottom:1px solid var(--hair)}
+  .faq summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding:22px 2px; font-size:clamp(18px,2.3vw,22px); font-weight:300; color:var(--ink); line-height:1.35}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+"; font-family:var(--mono); font-size:18px; color:var(--muted); flex:none}
+  .faq details[open] summary::after{content:"\2212"}
+  .faq summary:focus-visible{outline:1px solid var(--ink); outline-offset:4px}
+  .faq details p{margin:0; padding:0 2px 24px; max-width:66ch; font-size:16.5px; line-height:1.65; color:var(--body)}
+  .foot a{color:var(--body)}
 </style></head><body>
 
 <header class="bar pad">
@@ -339,6 +349,53 @@
     </div>
   </section>
 
+  <section class="faq pad" id="faq">
+    <div class="col">
+      <div class="sec-head">
+        <span class="label">FAQ · The Fine Print</span>
+        <h2>Straight answers before you ask.</h2>
+      </div>
+      <div class="list">
+        <details>
+          <summary>Do you own these properties?</summary>
+          <p>No. I have each one under a signed purchase contract with the owner. What I'm selling is my position in that contract, by assignment. The owner still holds title, and it passes from the owner to you at closing.</p>
+        </details>
+        <details>
+          <summary>Are you a real estate agent?</summary>
+          <p>Yes. I'm a licensed Tennessee affiliate broker, license #386299, with The Homestead Group. On these contracts I'm the buyer, and I'm assigning for myself. I'm not acting as your agent or the seller's agent, and I don't represent you. Bring your own agent or attorney if you want one.</p>
+        </details>
+        <details>
+          <summary>What does "all-in" mean?</summary>
+          <p>It's the price to you: the contract price with the owner plus my assignment fee. Who pays title and closing costs is written in the assignment agreement, so read that before you sign.</p>
+        </details>
+        <details>
+          <summary>How does buying one work?</summary>
+          <p>You tell me which one you want, and I send the packet with the contract terms. If it fits, you sign an assignment agreement, put up the earnest money, show proof of funds, and close with the title company by the contract's closing date.</p>
+        </details>
+        <details>
+          <summary>What am I getting, condition-wise?</summary>
+          <p>Every property is sold as-is. I make no promises about condition, value, repairs, zoning, flood status or what it will be worth after you build or renovate. Any numbers I share are my own estimates. Check everything yourself inside the inspection window.</p>
+        </details>
+        <details>
+          <summary>Can a contract on this page go away?</summary>
+          <p>Yes. A contract can be assigned to another buyer, end during its inspection period, or have its dates change. A property showing here is not an offer to you and not a promise that it's still available. Text me to confirm before you plan around one.</p>
+        </details>
+        <details>
+          <summary>Why are there no photos here?</summary>
+          <p>Photos and the full packet go out one to one. Text me the address and I'll send them.</p>
+        </details>
+        <details>
+          <summary>What happens with my buy box?</summary>
+          <p>It comes to me, and I use it to send you contracts. You'll get calls, texts or emails from me about deals. Tell me to stop and I stop.</p>
+        </details>
+        <details>
+          <summary>Is any of this legal or financial advice?</summary>
+          <p>No. Nothing on this page is legal, tax or investment advice. Talk to your own attorney, accountant and title company before you commit money.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section class="close pad" id="contact">
     <div class="narrow">
       <span class="label">Direct</span>
@@ -351,7 +408,7 @@
   </section>
 
   <footer class="foot pad">
-    <p>Details come from the contracts and public records and can change. Verify everything yourself before you commit.</p>
+    <p>Details come from the contracts and public records and can change. Verify everything yourself before you commit. <a href="#faq">Read the FAQ</a>.</p>
     <p class="lic">Robert Michael Estrada · TN Affiliate Broker #386299 · The Homestead Group</p>
   </footer>
 </main>
